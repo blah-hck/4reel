@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NO FACE NO CASE</title>
+    <!-- Google Font para maging KAGAYA ng PUBLIC ENEMY ang style -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,10 +16,10 @@
         }
 
         body {
-            color: #fff;
+            color: #ffffff;
             min-height: 100vh;
             padding: 40px 20px;
-            background: #000 url("https://i.imgur.com/9XbRb7L.png") center top / contain no-repeat fixed;
+            background: #000000 url("https://i.imgur.com/ZmspxIl.jpeg") center top / contain no-repeat fixed;
             position: relative;
         }
 
@@ -23,7 +27,7 @@
             content: "";
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0, 0, 0, 0.75); /* Madilim lang, walang ibang kulay */
             z-index: 0;
             pointer-events: none;
         }
@@ -36,14 +40,16 @@
             z-index: 1;
         }
 
+        /* ✅ Font na KAGAYA ng PUBLIC ENEMY */
         h1 {
-            font-size: clamp(2.8rem, 11vw, 4rem);
-            letter-spacing: 5px;
+            font-size: clamp(2.5rem, 10vw, 3.5rem);
+            letter-spacing: 4px;
             margin: 20px 0 50px;
             color: #ffffff;
             text-transform: uppercase;
-            font-family: 'Old English Text MT', 'Blackletter', 'Fraktur', 'Garamond', serif;
-            text-shadow: 0 0 15px rgba(255,255,255,0.25);
+            font-family: 'Orbitron', 'Bank Gothic', 'Eurostile', sans-serif;
+            font-weight: 900;
+            text-shadow: 0 0 12px rgba(255,255,255,0.2);
         }
 
         .section-title {
@@ -105,17 +111,17 @@
             font-family: 'Segoe UI', sans-serif;
         }
 
-        /* ✅ Fixed Splash Screen */
+        /* ✅ Splash Screen - Walang ibang kulay */
         #splash {
             position: fixed;
             inset: 0;
-            background: #000;
+            background: #000000; /* Puro itim lang */
             z-index: 9999;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            color: #fff;
+            color: #ffffff;
             font-size: clamp(1.8rem, 6vw, 2.5rem);
             letter-spacing: 2px;
             cursor: pointer;
@@ -136,13 +142,14 @@
 
         #splash .main-text {
             font-size: clamp(2rem, 7vw, 2.8rem);
-            color: #fff;
-            font-family: 'Old English Text MT', serif;
+            color: #ffffff;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
         }
 
         #splash .tap-text {
             font-size: 1.1rem;
-            color: #888;
+            color: #aaaaaa;
             font-family: 'Segoe UI', sans-serif;
         }
 
@@ -213,7 +220,7 @@
         #serverModal {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.25);
+            background: rgba(0, 0, 0, 0.85);
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
             display: none;
@@ -226,8 +233,8 @@
         .modal-content {
             width: 100%;
             max-width: 380px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(25, 25, 25, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
             padding: 30px 20px;
             text-align: center;
@@ -237,6 +244,7 @@
         .modal-content h3 {
             font-size: 1.8rem;
             margin-bottom: 15px;
+            font-family: 'Orbitron', sans-serif;
             text-shadow: 0 0 15px rgba(255,255,255,0.2);
         }
 
@@ -376,7 +384,7 @@
             </div>
         </div>
 
-        <!-- ✅ DAY ONES - with your 3 added members -->
+        <!-- ✅ DAY ONES kasama ang 3 bago -->
         <div class="section-title">DAY ONES</div>
         <div class="marquee-wrapper">
             <div class="marquee-content">
@@ -422,7 +430,7 @@
                     </div>
                     <div class="username">VinSwag</div>
                 </div>
-                <!-- ✅ Your 3 added members -->
+                <!-- ✅ 3 Bagong Miyembro -->
                 <div class="user-card">
                     <div class="avatar-wrap">
                         <img class="avatar" src="https://i.imgur.com/pCb2mZP.png" alt="2kPing">
@@ -444,7 +452,7 @@
                     </div>
                     <div class="username">Zero</div>
                 </div>
-                <!-- Repeat for smooth scroll -->
+                <!-- Repeat para tuloy ang ikot -->
                 <div class="user-card">
                     <div class="avatar-wrap">
                         <img class="avatar" src="https://i.imgur.com/FGirYUH.png" alt="JM">
@@ -530,14 +538,14 @@
     
 
     <script>
-        // Fallback for broken images
+        // Backup kung sira ang litrato
         document.querySelectorAll('img').forEach(img => {
             img.onerror = function() {
                 this.src = "https://cdn.discordapp.com/embed/avatars/0.png";
             };
         });
 
-        // ✅ Fixed splash click handler
+        // ✅ Ayos na pag-click - hindi na magiging asul
         const splash = document.getElementById('splash');
         const audio = document.getElementById('bgAudio');
         audio.volume = 0.25;
@@ -550,17 +558,5 @@
             audio.play().catch(err => console.log("Audio blocked:", err));
         });
 
-        // Community Hub data
         const allyServers = [
-            { name: "BLAH #ALBTHCKS", invite: "Ty7qb4thSs", guildId: "1504217597900755075", icon: "335c5d2498dbf8b0ab834b022710c86a", members: "99999", status: "999999 ONLINE" }
-        ];
-
-        const container = document.getElementById('hubContainer');
-        allyServers.forEach(server => {
-            const iconUrl = `https://cdn.discordapp.com/icons/${server.guildId}/${server.icon}.png?size=128`;
-            const card = document.createElement('div');
-            card.className = 'server-card';
-            card.innerHTML = `
-                <div class="server-info">
-                    <img class="server-icon" src="${iconUrl}" alt="${server.name}">
-                    
+            { name: "BLAH #ALBTHCKS", invite: "Ty7qb4thSs", guildId: "1504217597900755075", icon: "335c5d2498dbf8b0ab834b022710c86a", members: "99999", status: 
