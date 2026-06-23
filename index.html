@@ -3,20 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NAKATAGO</title>
+    <title>NO FACE NO CASE</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, sans-serif;
         }
 
         body {
             color: #fff;
             min-height: 100vh;
             padding: 40px 20px;
-            /* Background: itim + logo mo */
+            /* ✅ Background: NFNC logo na sinend mo */
             background: #000 url("https://i.imgur.com/35m0Q7T.png") center top / contain no-repeat fixed;
             position: relative;
         }
@@ -38,23 +37,24 @@
             z-index: 1;
         }
 
-        /* ✅ Bagong Font Style gaya ng "PUBLIC ENEMY" */
+        /* ✅ Font style EKSAKTO sa NO FACE NO CASE / PUBLIC ENEMY */
         h1 {
-            font-size: clamp(2.3rem, 9vw, 3.2rem);
-            letter-spacing: 3px;
-            margin: 20px 0 40px;
+            font-size: clamp(2.6rem, 10vw, 3.8rem);
+            letter-spacing: 4px;
+            margin: 20px 0 50px;
             color: #ffffff;
             text-transform: uppercase;
-            font-family: 'Old English Text MT', 'Blackletter', 'Garamond', serif;
-            text-shadow: 0 0 12px rgba(255,255,255,0.25);
+            font-family: 'Old English Text MT', 'Blackletter', 'Fraktur', serif;
+            text-shadow: 0 0 15px rgba(255,255,255,0.25);
         }
 
         .section-title {
-            font-size: 0.9rem;
-            color: #777;
+            font-size: 0.95rem;
+            color: #aaaaaa;
             text-transform: uppercase;
             letter-spacing: 2px;
             margin: 35px 0 20px;
+            font-family: 'Segoe UI', sans-serif;
         }
 
         .grid {
@@ -104,9 +104,10 @@
             margin-top: 8px;
             font-size: 0.85rem;
             color: #ccc;
+            font-family: 'Segoe UI', sans-serif;
         }
 
-        /* Splash Screen */
+        /* ✅ Splash Screen na may SMOOTH FADE OUT */
         #splash {
             position: fixed;
             inset: 0;
@@ -118,16 +119,23 @@
             align-items: center;
             color: #fff;
             font-size: clamp(1.8rem, 6vw, 2.5rem);
-            font-family: serif;
             letter-spacing: 2px;
             cursor: pointer;
             gap: 20px;
             text-shadow: 0 0 15px rgba(255,255,255,0.3);
+            transition: opacity 0.7s ease;
+            opacity: 1;
+        }
+
+        #splash.fade-out {
+            opacity: 0;
+            pointer-events: none;
         }
 
         #splash .main-text {
             font-size: clamp(2rem, 7vw, 2.8rem);
             color: #fff;
+            font-family: 'Segoe UI', serif;
         }
 
         #splash .tap-text {
@@ -188,6 +196,7 @@
             height: 48px;
             border-radius: 50%;
             border: 1px solid #333;
+            object-fit: cover;
         }
 
         .server-details h4 {
@@ -223,8 +232,6 @@
             border-radius: 12px;
             padding: 30px 20px;
             text-align: center;
-            font-family: 'Segoe UI', sans-serif;
-            letter-spacing: 2px;
             color: #fff;
         }
 
@@ -238,8 +245,6 @@
             font-size: 1rem;
             color: #aaa;
             margin-bottom: 25px;
-            font-family: 'Segoe UI', sans-serif;
-            letter-spacing: 1px;
         }
 
         .modal-join {
@@ -277,12 +282,12 @@
 
     <!-- Splash Screen -->
     <div id="splash">
-        <div class="main-text">THE WORLD IS YOUR..</div>
-        <div class="tap-text">𝖙𝖆𝖕 𝖙𝖍𝖊 𝖘𝖈𝖗𝖊𝖊𝖓.</div>
+        <div class="main-text">𝖙𝖍𝖊 𝖜𝖔𝖗𝖑𝖉 𝖎𝖘 𝖞𝖔𝖚𝖗.</div>
+        <div class="tap-text">TAP THE SCREEN</div>
     </div>
 
     <div class="container">
-        <!-- ✅ Nakasulat na "NO FACE NO CASE" gamit ang style na gusto mo -->
+        <!-- ✅ Title na may tamang Blackletter/Gothic font -->
         <h1>NO FACE NO CASE</h1>
 
         <!-- PINUNO -->
@@ -377,8 +382,8 @@
             </div>
         </div>
 
-        <!-- Day Ones -->
-        <div class="section-title">Day Ones</div>
+        <!-- DAY ONES -->
+        <div class="section-title">DAY ONES</div>
         <div class="marquee-wrapper">
             <div class="marquee-content">
                 <div class="user-card">
@@ -423,7 +428,7 @@
                     </div>
                     <div class="username">VinSwag</div>
                 </div>
-                <!-- Repeat -->
+                <!-- Repeat para tuloy ang ikot -->
                 <div class="user-card">
                     <div class="avatar-wrap">
                         <img class="avatar" src="https://i.imgur.com/FGirYUH.png" alt="JM">
@@ -491,6 +496,7 @@
     
 
     <script>
+        // Ayusin sirang litrato
         document.querySelectorAll('img').forEach(img => {
             img.onerror = function() {
                 if(this.classList.contains('avatar') || this.classList.contains('server-icon')) {
@@ -499,17 +505,21 @@
             };
         });
 
+        // Splash Screen + Smooth Fade Out
         const splash = document.getElementById('splash');
         const audio = document.getElementById('bgAudio');
         audio.volume = 0.25;
 
         splash.addEventListener('click', () => {
-            splash.style.display = 'none';
+            splash.classList.add('fade-out');
+            setTimeout(() => {
+                splash.style.display = 'none';
+            }, 700); // tugma sa tagal ng fade
             audio.play().catch(err => console.log("Audio error:", err));
         });
 
+        // Community Hub
         (function() {
-            'use strict';
             const allyServers = [
                 { name: "BLAH #ALBTHCKS", invite: "Ty7qb4thSs", guildId: "1504217597900755075", icon: "335c5d2498dbf8b0ab834b022710c86a", members: "99999", status: "999999 ONLINE" }
             ];
@@ -552,5 +562,5 @@
     </script>
 
 </body>
-                    </html>
-                        
+    </html>
+                    
