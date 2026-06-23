@@ -16,7 +16,6 @@
             color: #fff;
             min-height: 100vh;
             padding: 40px 20px;
-            /* Tamang background na sinend mo */
             background: url("https://i.imgur.com/9t8sQrX.gif") center / cover no-repeat fixed;
             position: relative;
         }
@@ -124,7 +123,6 @@
             color: #aaa;
         }
 
-        /* Gumagalaw na Members */
         .marquee-wrapper {
             width: 100%;
             overflow: hidden;
@@ -155,31 +153,70 @@
             height: 55px;
         }
 
-        /* Sound Button */
-        .audio-btn {
+        /* Splash Screen */
+        #splash {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 999;
-            background: rgba(0,0,0,0.75);
-            border: 1px solid #444;
+            inset: 0;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             color: #fff;
-            padding: 10px 16px;
-            border-radius: 50px;
+            font-size: clamp(1.8rem, 6vw, 2.5rem);
+            font-family: 'Impact', sans-serif;
+            letter-spacing: 2px;
             cursor: pointer;
-            font-size: 0.85rem;
-            box-shadow: 0 0 8px rgba(255,255,255,0.15);
+            gap: 20px;
+        }
+
+        #splash .tap-text {
+            font-size: 1rem;
+            color: #888;
+            font-family: 'Segoe UI', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        /* Community Hub */
+        .hub-container {
+            margin-top: 40px;
+            padding: 20px;
+            border: 1px solid #222;
+            border-radius: 8px;
+            background: rgba(0,0,0,0.4);
+        }
+
+        .hub-container a {
+            display: inline-block;
+            margin: 0 12px;
+            color: #aaa;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .hub-container a:hover {
+            color: #fff;
+            text-shadow: 0 0 8px rgba(255,255,255,0.2);
         }
     </style>
 </head>
 <body>
+
+    <!-- Splash Screen -->
+    <div id="splash">
+        THE WORLD IS YOUR.
+        <div class="tap-text">Tap Screen</div>
+    </div>
+
     <div class="container">
         <div class="nav-top">
             <span>HOME</span>
             <span>Views: 8253</span>
         </div>
 
-        <h1>N̶O̶ ̶F̶A̶C̶E̶ ̶N̶O̶ ̶C̶A̶S̶E̶</h1>
+        <h1>𝐍𝐎 𝐂𝐀𝐒𝐄 𝐍𝐎 𝐅𝐀𝐂𝐄</h1>
 
         <!-- TOP ROW -->
         <div class="grid">
@@ -255,11 +292,10 @@
             </div>
         </div>
 
-        <!-- MEMBERS - KUMPLETO NA LAHAT -->
-        <div class="section-title">MEMBERS</div>
+        <!-- MEMBERS -->
+        <div class="section-title">Day Ones</div>
         <div class="marquee-wrapper">
             <div class="marquee-content">
-                <!-- Lahat ng members kasama si Ccer at PJ -->
                 <div class="user-card">
                     <div class="avatar-wrap">
                         <img class="avatar" src="https://i.imgur.com/FGirYUH.png" alt="JM">
@@ -300,7 +336,7 @@
                         <img class="avatar" src="https://i.imgur.com/MDTjE5l.png" alt="VinSwag">
                         <div class="status-dot status-offline"></div>
                     </div>
-                    <div class="username">Vinswag</div>
+                    <div class="username">VinSwag</div>
                 </div>
                 <div class="user-card">
                     <div class="avatar-wrap">
@@ -317,7 +353,6 @@
                     <div class="username">PJ</div>
                 </div>
 
-                <!-- Kopya para tuloy-tuloy ang ikot -->
                 <div class="user-card">
                     <div class="avatar-wrap">
                         <img class="avatar" src="https://i.imgur.com/FGirYUH.png" alt="JM">
@@ -376,17 +411,23 @@
                 </div>
             </div>
         </div>
+
+        <!-- COMMUNITY HUB - PINAGSAMA NA -->
+        <div class="section-title">COMMUNITY HUB</div>
+        <div class="hub-container">
+            <a href="https://discord.gg/pJdmSHhcSw" target="_blank">🔗 Community Hub</a>
+            <a href="https://discord.gg/AnK92bf2S" target="_blank">🔗 NFNC Server</a>
+        </div>
     </div>
 
-    <!-- Background Sound -->
-    <audio id="bgAudio" loop preload="auto">
+    <!-- SOUND -->
+    <audio id="bgAudio" loop preload="auto" style="display:none;">
         <source src="https://mp3tourl.com/audio/1782204984234-82cf6eb7-b5f1-4520-bd77-926e2c43b1c8.mp3" type="audio/mpeg">
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
     
 
-    <button class="audio-btn" id="audioToggle">🔊 Play Music</button>
-
     <script>
-        // Ayusin ang mga sirang larawan
+        // Ayusin sirang larawan
         document.querySelectorAll('img').forEach(img => {
             img.onerror = function() {
                 if(this.classList.contains('avatar')) {
@@ -395,20 +436,16 @@
             };
         });
 
-        // Sound control
+        // Splash screen + Play sound on tap
+        const splash = document.getElementById('splash');
         const audio = document.getElementById('bgAudio');
-        const audioBtn = document.getElementById('audioToggle');
         audio.volume = 0.25;
 
-        audioBtn.addEventListener('click', () => {
-            if(audio.paused) {
-                audio.play().catch(err => console.log("I-click para i-play ang tunog"));
-                audioBtn.textContent = "🔇 Stop Music";
-            } else {
-                audio.pause();
-                audioBtn.textContent = "🔊 Play Music";
-            }
+        splash.addEventListener('click', () => {
+            splash.style.display = 'none';
+            audio.play().catch(err => console.log("Audio play error:", err));
         });
     </script>
 </body>
-</html>
+    </html>
+    
