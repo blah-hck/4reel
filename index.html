@@ -17,18 +17,31 @@
             color: #fff;
             min-height: 100vh;
             padding: 40px 20px;
-            background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
-            background-size: 20px 20px;
+            /* Background GIF na sinend mo */
+            background: url("https://i.imgur.com/MDTjE5l.png") center / cover no-repeat fixed;
+            position: relative;
+        }
+
+        /* Para medyo madilim nang kaunti ang background para mas malinaw ang mga avatar */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            z-index: 0;
+            pointer-events: none;
         }
 
         .container {
-            max-width: 900px;imgur
+            max-width: 900px;
             margin: 0 auto;
             text-align: center;
+            position: relative;
+            z-index: 1;
         }
 
         h1 {
-            font-size: 3rem;
+            font-size: clamp(2.5rem, 8vw, 3.5rem);
             letter-spacing: 3px;
             margin-bottom: 10px;
             color: #fff;
@@ -88,6 +101,8 @@
             object-fit: cover;
             z-index: 2;
             position: relative;
+            /* Para hindi magkaroon ng parang box o outline kapag may error */
+            background: #111;
         }
 
         .decor {
@@ -99,6 +114,12 @@
             height: 120%;
             pointer-events: none;
             z-index: 3;
+            /* Itinatago kapag hindi ma-load */
+            display: none;
+        }
+
+        .decor.loaded {
+            display: block;
         }
 
         .status-dot {
@@ -129,6 +150,8 @@
             overflow: hidden;
             position: relative;
             margin-top: 20px;
+            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
         }
 
         .marquee-content {
@@ -151,6 +174,21 @@
             width: 55px;
             height: 55px;
         }
+
+        /* Audio control button */
+        .audio-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+            background: rgba(0,0,0,0.7);
+            border: 1px solid #333;
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
     </style>
 </head>
 <body>
@@ -166,23 +204,21 @@
         <div class="grid">
             <div class="user-card" data-id="1">
                 <div class="avatar-wrap">
-                    <img class="avatar" src="https://i.imgur.com/Wh5d6RR.gif">
-                    <img class="decor" src="https://cdn.discordapp.com/avatar-decoration-presets/a_kitty_ears.png?size=160">
+                    <img class="avatar" src="https://i.imgur.com/Wh5d6RR.gif" alt="Avatar">
                     <div class="status-dot status-online"></div>
                 </div>
             </div>
 
             <div class="user-card" data-id="2">
                 <div class="avatar-wrap">
-                    <img class="avatar" src="https://i.imgur.com/iDJB8Ol.png">
-                    <img class="decor" src="https://cdn.discordapp.com/avatar-decoration-presets/a_kitty_ears.png?size=160">
+                    <img class="avatar" src="https://i.imgur.com/iDJB8Ol.png" alt="Avatar">
                     <div class="status-dot status-online"></div>
                 </div>
             </div>
 
             <div class="user-card" data-id="3">
                 <div class="avatar-wrap">
-                    <img class="avatar" src="https://i.imgur.com/Hxjp3su.gif">
+                    <img class="avatar" src="https://i.imgur.com/Hxjp3su.gif" alt="Avatar">
                     <div class="status-dot status-offline"></div>
                 </div>
             </div>
@@ -193,39 +229,35 @@
         <div class="grid">
             <div class="user-card" data-id="4">
                 <div class="avatar-wrap">
-                    <img class="avatar" src="https://i.imgur.com/iOZH1e2.jpeg">
+                    <img class="avatar" src="https://i.imgur.com/iOZH1e2.jpeg" alt="Avatar">
                     <div class="status-dot status-offline"></div>
                 </div>
             </div>
 
             <div class="user-card" data-id="5">
                 <div class="avatar-wrap">
-                    <img class="avatar" src="https://i.imgur.com/cR3yxWV.jpeg">
-                    <img class="decor" src="https://cdn.discordapp.com/avatar-decoration-presets/a_kitty_ears.png?size=160">
+                    <img class="avatar" src="https://i.imgur.com/cR3yxWV.jpeg" alt="Avatar">
                     <div class="status-dot status-online"></div>
                 </div>
             </div>
 
             <div class="user-card" data-id="6">
                 <div class="avatar-wrap">
-                    <img class="avatar" src="https://i.imgur.com/XkHga9z.jpeg">
-                    <img class="decor" src="https://cdn.discordapp.com/avatar-decoration-presets/a_fire_ring.png?size=160">
+                    <img class="avatar" src="https://i.imgur.com/XkHga9z.jpeg" alt="Avatar">
                     <div class="status-dot status-online"></div>
                 </div>
             </div>
 
             <div class="user-card" data-id="7">
                 <div class="avatar-wrap">
-                    <img class="avatar" src="https://i.imgur.com/FkMZrTS.png">
-                    <img class="decor" src="https://cdn.discordapp.com/avatar-decoration-presets/a_crossbones.png?size=160">
+                    <img class="avatar" src="https://i.imgur.com/FkMZrTS.png" alt="Avatar">
                     <div class="status-dot status-idle"></div>
                 </div>
             </div>
 
             <div class="user-card" data-id="8">
                 <div class="avatar-wrap">
-                    <img class="avatar" src="https://i.imgur.com/8Socw02.jpeg">
-                    <img class="decor" src="https://cdn.discordapp.com/avatar-decoration-presets/a_x4u.png?size=160">
+                    <img class="avatar" src="https://i.imgur.com/8Socw02.jpeg" alt="Avatar">
                     <div class="status-dot status-dnd"></div>
                 </div>
             </div>
@@ -236,19 +268,18 @@
         <div class="grid">
             <div class="user-card" data-id="9">
                 <div class="avatar-wrap">
-                    <img class="avatar" src="https://i.imgur.com/AQiHBgA.gif">
-                    <img class="decor" src="https://cdn.discordapp.com/avatar-decoration-presets/a_kitty_ears_red.png?size=160">
+                    <img class="avatar" src="https://i.imgur.com/AQiHBgA.gif" alt="Avatar">
                     <div class="status-dot status-online"></div>
                 </div>
             </div>
 
             <div class="user-card" data-id="10">
                 <div class="avatar-wrap">
-                    <img class="avatar" src="https://i.imgur.com/zY6UbYm.gif">
-                    <img class="decor" src="https://cdn.discordapp.com/avatar-decoration-presets/a_heart.png?size=160">
+                    <img class="avatar" src="https://i.imgur.com/zY6UbYm.gif" alt="Avatar">
                     <div class="status-dot status-online"></div>
-              </div>
-          </div>
+                </div>
+            </div>
+        </div>
 
         <!-- MEMBERS - GUMAGALAW -->
         <div class="section-title">MEMBERS</div>
@@ -257,55 +288,139 @@
                 <!-- Unang set -->
                 <div class="user-card">
                     <div class="avatar-wrap">
-                        <img class="avatar" src="https://i.imgur.com/FGirYUH.png">
+                        <img class="avatar" src="https://i.imgur.com/FGirYUH.png" alt="JM">
                         <div class="status-dot status-online"></div>
                     </div>
                     <div class="username">JM</div>
                 </div>
                 <div class="user-card">
                     <div class="avatar-wrap">
-                        <img class="avatar" src="https://i.imgur.com/UnzfBlK.png">
+                        <img class="avatar" src="https://i.imgur.com/UnzfBlK.png" alt="Anghell">
                         <div class="status-dot status-online"></div>
                     </div>
                     <div class="username">Anghell</div>
                 </div>
                 <div class="user-card">
                     <div class="avatar-wrap">
-                        <img class="avatar" src="https://i.imgur.com/prt0snc.png">
+                        <img class="avatar" src="https://i.imgur.com/prt0snc.png" alt="KenAmaru">
                         <div class="status-dot status-offline"></div>
                     </div>
                     <div class="username">KenAmaru</div>
                 </div>
                 <div class="user-card">
                     <div class="avatar-wrap">
-                        <img class="avatar" src="https://i.imgur.com/kuLI3FO.png">
+                        <img class="avatar" src="https://i.imgur.com/kuLI3FO.png" alt="Avatar">
                         <div class="status-dot status-offline"></div>
                     </div>
-                </div> class="username">Ccer</div>
+                </div> 
                 <div class="user-card">
                     <div class="avatar-wrap">
-                        <img class="avatar" src="https://i.imgur.com/AhzKzAw.png">
+                        <img class="avatar" src="https://i.imgur.com/AhzKzAw.png" alt="Ackz">
                         <div class="status-dot status-offline"></div>
                     </div>
                     <div class="username">Ackz</div>
                 </div>
                 <div class="user-card">
                     <div class="avatar-wrap">
-                        <img class="avatar" src="https://i.imgur.com/MDTjE5l.png">
+                        <img class="avatar" src="https://i.imgur.com/MDTjE5l.png" alt="VinSwag">
                         <div class="status-dot status-offline"></div>
                     </div>
                     <div class="username">VinSwag</div>
                 </div>
                 <div class="user-card">
                     <div class="avatar-wrap">
-                        <img class="avatar" src="https://i.imgur.com/zqwxno6.png">
+                        <img class="avatar" src="https://i.imgur.com/zqwxno6.png" alt="Thong">
+                        <div class="status-dot status-offline"></div>
+                    </div>
+                    <div class="username">Thong</div>
+                </div>
+
+                <!-- Kopya para tuloy-tuloy ang ikot -->
+                <div class="user-card">
+                    <div class="avatar-wrap">
+                        <img class="avatar" src="https://i.imgur.com/FGirYUH.png" alt="JM">
+                        <div class="status-dot status-online"></div>
+                    </div>
+                    <div class="username">JM</div>
+                </div>
+                <div class="user-card">
+                    <div class="avatar-wrap">
+                        <img class="avatar" src="https://i.imgur.com/UnzfBlK.png" alt="Anghell">
+                        <div class="status-dot status-online"></div>
+                    </div>
+                    <div class="username">Anghell</div>
+                </div>
+                <div class="user-card">
+                    <div class="avatar-wrap">
+                        <img class="avatar" src="https://i.imgur.com/prt0snc.png" alt="KenAmaru">
+                        <div class="status-dot status-offline"></div>
+                    </div>
+                    <div class="username">KenAmaru</div>
+                </div>
+                <div class="user-card">
+                    <div class="avatar-wrap">
+                        <img class="avatar" src="https://i.imgur.com/kuLI3FO.png" alt="Avatar">
+                        <div class="status-dot status-offline"></div>
+                    </div>
+                </div> 
+                <div class="user-card">
+                    <div class="avatar-wrap">
+                        <img class="avatar" src="https://i.imgur.com/AhzKzAw.png" alt="Ackz">
+                        <div class="status-dot status-offline"></div>
+                    </div>
+                    <div class="username">Ackz</div>
+                </div>
+                <div class="user-card">
+                    <div class="avatar-wrap">
+                        <img class="avatar" src="https://i.imgur.com/MDTjE5l.png" alt="VinSwag">
+                        <div class="status-dot status-offline"></div>
+                    </div>
+                    <div class="username">VinSwag</div>
+                </div>
+                <div class="user-card">
+                    <div class="avatar-wrap">
+                        <img class="avatar" src="https://i.imgur.com/zqwxno6.png" alt="Thong">
                         <div class="status-dot status-offline"></div>
                     </div>
                     <div class="username">Thong</div>
                 </div>
             </div>
+        </div>
+    </div>
 
-     <script>
+    <!-- Background Sound -->
+    <audio id="bgAudio" loop preload="auto">
+        <source src="https://mp3tourl.com/audio/1782204984234-82cf6eb7-b5f1-4520-bd77-926e2c43b1c8.mp3" type="audio/mpeg">
+    
+    <button class="audio-btn" id="audioToggle">🔊 Play Music</button>
+
+    <script>
+        // Ayusin ang mga sirang picture/link
+        document.querySelectorAll('img').forEach(img => {
+            img.onerror = function() {
+                this.style.display = 'none';
+                // Kung avatar, lagyan ng itim na background
+                if(this.classList.contains('avatar')) {
+                    this.src = "https://cdn.discordapp.com/embed/avatars/0.png";
+                }
+            };
+        });
+
+        // Audio control
+        const audio = document.getElementById('bgAudio');
+        const audioBtn = document.getElementById('audioToggle');
+        audio.volume = 0.3;
+
+        audioBtn.addEventListener('click', () => {
+            if(audio.paused) {
+                audio.play().catch(e => console.log("Auto-play blocked, click to play"));
+                audioBtn.textContent = "🔇 Stop Music";
+            } else {
+                audio.pause();
+                audioBtn.textContent = "🔊 Play Music";
+            }
+        });
+
         // Real-time Discord Status
         const socket = new WebSocket('wss://api.lanyard.rest/socket');
         const userIds = ["1497306715715010620", "1255196462195806290", "1421541305309335643", "1505646697290924103", "1475526026422649115", "851613391096381440", "1489962785839386755", "1414171167883001876"];
@@ -315,22 +430,29 @@
         };
 
         socket.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-            if (data.op === 0 && data.d) {
-                const id = data.d.discord_user.id;
-                const status = data.d.discord_status;
-                const avatar = data.d.discord_user.avatar;
-                const avatarUrl = `https://cdn.discordapp.com/avatars/${id}/${avatar}.${avatar.startsWith('a_') ? 'gif' : 'png'}?size=128`;
+            try {
+                const data = JSON.parse(event.data);
+                if (data.op === 0 && data.d) {
+                    const id = data.d.discord_user.id;
+                    const status = data.d.discord_status;
+                    const avatar = data.d.discord_user.avatar;
+                    const avatarUrl = `https://cdn.discordapp.com/avatars/${id}/${avatar}.${avatar.startsWith('a_') ? 'gif' : 'png'}?size=128`;
 
-                const card = document.querySelector(`.user-card[data-id="${id}"]`);
-                if (card) {
-                    card.querySelector('.avatar').src = avatarUrl;
-                    const dot = card.querySelector('.status-dot');
-                    dot.className = `status-dot status-${status}`;
+                    const card = document.querySelector(`.user-card[data-id="${id}"]`);
+                    if (card) {
+                        const avatarImg = card.querySelector('.avatar');
+                        avatarImg.src = avatarUrl;
+                        const dot = card.querySelector('.status-dot');
+                        dot.className = `status-dot status-${status}`;
+                    }
                 }
+            } catch(e) {
+                console.log("Lanyard message error:", e);
             }
         };
+
+        socket.onerror = () => console.log("Lanyard connection error");
+        socket.onclose = () => setTimeout(() => window.location.reload(), 10000);
     </script>
 </body>
 </html>
-            
