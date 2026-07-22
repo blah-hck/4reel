@@ -10,10 +10,8 @@
         body {
             color: #ffffff;
             min-height: 100vh;
-            padding: 40px 20px;
-            background: #000000 url("https://i.imgur.com/0ihl3E4.jpeg") center top / contain no-repeat fixed;
-            position: relative;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #000 url("https://i.imgur.com/0ihl3E4.jpeg") center top / contain no-repeat fixed;
+            font-family: 'Segoe UI', sans-serif;
         }
         body::before {
             content: "";
@@ -21,28 +19,57 @@
             inset: 0;
             background: rgba(0,0,0,0.75);
             z-index: 0;
+        }
+
+        /* ✅ SPLASH SCREEN */
+        #splash {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        #splash.fade {
+            opacity: 0;
+            transition: opacity 0.25s ease;
             pointer-events: none;
         }
-        .container {
-            max-width: 720px;
-            margin: 0 auto;
-            text-align: center;
+        #splash .main {
+            font-size: clamp(2rem, 7vw, 3rem);
+            font-family: Arial Black, sans-serif;
+            text-transform: uppercase;
+            color: #fff;
+        }
+        #splash .sub {
+            font-size: 1rem;
+            color: #aaa;
+            margin-top: 12px;
+        }
+
+        /* ✅ MAIN CONTENT */
+        #main {
             position: relative;
             z-index: 1;
-            display: none; /* Itago muna hanggang ma-click ang splash */
+            padding: 40px 20px;
+            max-width: 720px;
+            margin: 0 auto;
+            display: none;
         }
+
         h1 {
             font-size: clamp(2.5rem, 10vw, 3.5rem);
             letter-spacing: 4px;
-            margin: 20px 0 50px;
+            margin-bottom: 50px;
             text-transform: uppercase;
-            font-family: Arial Black, Impact, Helvetica Bold, sans-serif;
-            font-weight: 900;
-            text-shadow: 0 0 12px rgba(255,255,255,0.2);
+            font-family: Arial Black, Impact, sans-serif;
         }
         .section-title {
             font-size: 1rem;
-            color: #cccccc;
+            color: #ccc;
             text-transform: uppercase;
             letter-spacing: 2px;
             margin: 35px 0 20px;
@@ -58,9 +85,7 @@
             flex-direction: column;
             align-items: center;
             cursor: pointer;
-            transition: transform 0.2s;
         }
-        .user-card:hover { transform: scale(1.05); }
         .avatar-wrap {
             position: relative;
             width: 85px;
@@ -71,10 +96,9 @@
             height: 100%;
             border-radius: 50%;
             border: 2px solid #222;
-            object-fit: cover;
             background: #111;
         }
-        .status-dot {
+        .status {
             position: absolute;
             bottom: 3px;
             right: 3px;
@@ -82,11 +106,11 @@
             height: 14px;
             border-radius: 50%;
             border: 2px solid #000;
-            background: #80848e;
+            background: #777;
         }
-        .status-online { background: #23a55a; }
-        .status-idle { background: #f0b232; }
-        .status-dnd { background: #f23f43; }
+        .status.on { background: #23a55a; }
+        .status.idle { background: #f0b232; }
+        .status.dnd { background: #f23f43; }
         .username {
             margin-top: 8px;
             font-size: 0.85rem;
@@ -96,44 +120,17 @@
             text-overflow: ellipsis;
             white-space: nowrap;
         }
-        #splash {
-            position: fixed;
-            inset: 0;
-            background: #000;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: opacity 0.3s ease;
-        }
-        #splash.fade-out {
-            opacity: 0;
-            pointer-events: none;
-        }
-        #splash .main-text {
-            font-size: clamp(2rem, 7vw, 2.8rem);
-            font-family: Arial Black, Impact, sans-serif;
-            text-transform: uppercase;
-            color: #fff;
-        }
-        #splash .tap-text { 
-            font-size: 1.1rem; 
-            color: #aaa; 
-            margin-top: 10px; 
-        }
-        .marquee-wrapper { width: 100%; overflow: hidden; margin-top: 20px; }
-        .marquee-content { display: flex; gap: 25px; animation: scroll 30s linear infinite; width: max-content; }
+        .marquee-wrapper { overflow: hidden; margin-top: 20px; }
+        .marquee { display: flex; gap: 25px; animation: scroll 30s linear infinite; width: max-content; }
         @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        .hub-container {
+        .hub {
             margin-top: 20px;
             padding: 15px;
             background: rgba(18,18,18,0.7);
             border: 1px solid #2a2a2a;
             border-radius: 6px;
         }
-        .server-card {
+        .server {
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -142,106 +139,93 @@
             background: rgba(30,30,30,0.6);
             border-radius: 4px;
             cursor: pointer;
-            transition: background 0.2s;
         }
-        .server-card:hover { background: rgba(40,40,40,0.8); }
-        .server-info { display: flex; align-items: center; gap: 12px; }
         .server-icon {
             width: 48px;
             height: 48px;
             border-radius: 50%;
-            border: 1px solid #333;
             object-fit: cover;
         }
-        .server-details h4 { font-size: 0.95rem; color: #fff; margin-bottom: 2px; }
-        .server-details p { font-size: 0.8rem; color: #999; }
-        #serverModal {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.85);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 10000;
-            padding: 20px;
-        }
-        .modal-content {
-            width: 100%;
-            max-width: 380px;
-            background: rgba(25,25,25,0.95);
+        .bot-card {
+            background: rgba(25,25,35,0.9);
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 12px;
-            padding: 30px 20px;
+            margin-top: 15px;
             text-align: center;
+            padding-bottom: 20px;
         }
-        .modal-content h3 { font-size: 1.8rem; margin-bottom: 15px; }
-        .modal-content p { font-size: 1rem; color: #aaa; margin-bottom: 25px; }
-        .modal-join {
-            display: inline-block;
-            padding: 10px 25px;
-            background: rgba(45,125,70,0.3);
-            border: 1px solid rgba(45,125,70,0.5);
+        .bot-banner {
+            width: 100%;
+            height: 120px;
+            background: url("https://i.imgur.com/Ou2c4I0.gif") center/cover;
+        }
+        .bot-avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 3px solid #1a1a2e;
+            margin: -45px auto 10px;
+        }
+        .bot-name { font-size: 1.4rem; font-weight: 900; }
+        .bot-role { color: #ff4ef5; font-weight: bold; margin: 10px 0; }
+        .invite-btn {
+            background: linear-gradient(90deg, #2563eb, #7c3aed);
+            color: white;
+            font-weight: bold;
+            padding: 10px 24px;
             border-radius: 6px;
-            color: #fff;
             text-decoration: none;
+            display: inline-block;
         }
-        .close-modal {
-            margin-top: 20px;
-            background: transparent;
-            border: none;
-            color: #888;
-            font-size: 0.9rem;
-            cursor: pointer;
-        }
-        #profileModal {
+
+        /* ✅ AYOS NA PROFILE MODAL - HINDI NAGPAPATONG */
+        .modal {
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.75);
+            background: rgba(0,0,0,0.8);
             display: none;
             justify-content: center;
             align-items: center;
             padding: 20px;
-            z-index: 10001;
+            z-index: 10000;
         }
-        .profile-card {
-            width: 100%;
-            max-width: 320px;
+        .modal-box {
             background: #18181b;
             border-radius: 12px;
-            overflow: hidden;
             border: 1px solid #27272a;
-            position: relative;
-        }
-        .profile-banner {
+            max-width: 320px;
             width: 100%;
+            overflow: hidden;
+        }
+        .prof-banner {
             height: 100px;
             background: linear-gradient(135deg, #5865F2, #EB459E);
+            position: relative;
         }
-        .close-profile {
+        .close {
             position: absolute;
             top: 8px;
             right: 8px;
             background: rgba(0,0,0,0.5);
             border: none;
             color: #fff;
-            font-size: 1.2rem;
             width: 28px;
             height: 28px;
             border-radius: 50%;
+            font-size: 1.2rem;
             cursor: pointer;
-            z-index: 2;
+            z-index: 10;
         }
-        .prof-header {
-            padding: 0 20px 15px;
+        /* ✅ INILIPAT ANG AVATAR SA TAMANG POSISYON */
+        .prof-content {
+            padding: 0 20px 20px;
+        }
+        .prof-avatar-wrap {
             margin-top: -40px;
+            margin-bottom: 12px;
             display: flex;
             align-items: flex-end;
-            gap: 12px;
-            position: relative;
-        }
-        .prof-avatar-wrap { 
-            position: relative;
-            flex-shrink: 0;
+            justify-content: space-between;
         }
         .prof-avatar {
             width: 80px;
@@ -249,8 +233,9 @@
             border-radius: 50%;
             border: 4px solid #18181b;
             background: #111;
+            position: relative;
         }
-        .prof-status-big {
+        .prof-status {
             position: absolute;
             bottom: 4px;
             right: 4px;
@@ -258,37 +243,31 @@
             height: 20px;
             border-radius: 50%;
             border: 3px solid #18181b;
-            background: #71717a;
+            background: #777;
         }
-        .prof-status-big.status-online { background: #22c55e; }
-        .prof-status-big.status-idle { background: #f59e0b; }
-        .prof-status-big.status-dnd { background: #ef4444; }
-        .prof-info {
-            padding-bottom: 10px;
-        }
-        .prof-name-big {
+        .prof-status.on { background: #22c55e; }
+        .prof-status.idle { background: #f59e0b; }
+        .prof-status.dnd { background: #ef4444; }
+        .prof-name {
             font-size: 1.4rem;
             font-weight: 800;
-            color: #fafafa;
             margin-bottom: 2px;
+            color: #fff;
         }
-        .prof-username {
-            font-size: 0.95rem;
-            color: #a1a1aa;
-            margin-bottom: 8px;
+        .prof-user {
+            color: #aaa;
+            margin-bottom: 15px;
         }
         .prof-bio {
-            font-size: 0.9rem;
-            color: #d4d4d8;
-            line-height: 1.5;
-            padding: 0 20px 15px;
+            padding-bottom: 15px;
             border-bottom: 1px solid #27272a;
-            min-height: 40px;
+            color: #ddd;
+            font-size: 0.95rem;
         }
-        .prof-section {
-            padding: 15px 20px;
+        .prof-activity {
+            margin-top: 15px;
         }
-        .prof-section-title {
+        .act-title {
             font-size: 0.75rem;
             font-weight: 600;
             color: #71717a;
@@ -296,252 +275,217 @@
             letter-spacing: 0.5px;
             margin-bottom: 10px;
         }
-        .prof-activity-box, .prof-activity-empty {
+        .act-box {
             background: #27272a;
             border-radius: 8px;
             padding: 12px;
             border: 1px solid #3f3f46;
-        }
-        .activity-name {
-            font-size: 1rem;
-            font-weight: 700;
-            color: #fafafa;
-            margin-bottom: 4px;
-        }
-        .activity-details {
-            font-size: 0.9rem;
             color: #d4d4d8;
-            line-height: 1.4;
-        }
-        .bot-feature-card {
-            background: rgba(25, 25, 35, 0.9);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-            margin-top: 15px;
-            overflow: hidden;
-            text-align: center;
-            transition: transform 0.2s ease;
-        }
-        .bot-feature-card:hover {
-            transform: translateY(-4px);
-        }
-        .bot-banner {
-            width: 100%;
-            height: 120px;
-            background: url("https://i.imgur.com/Ou2c4I0.gif") center / cover no-repeat;
-        }
-        .bot-avatar-wrap {
-            width: 90px;
-            height: 90px;
-            margin: -45px auto 10px;
-            border-radius: 50%;
-            border: 3px solid #1a1a2e;
-            overflow: hidden;
-            background: #000;
-        }
-        .bot-avatar {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .bot-name {
-            font-size: 1.4rem;
-            font-weight: 900;
-            color: #ffffff;
-            text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
-        }
-        .bot-role {
-            color: #ff4ef5;
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-        .bot-tags {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
-        .bot-tag {
-            background: rgba(0, 200, 200, 0.15);
-            border: 1px solid rgba(0, 220, 220, 0.3);
-            color: #0ff;
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 0.85rem;
-        }
-        .bot-desc {
-            color: #aaa;
-            font-size: 0.9rem;
-            padding: 0 15px 15px;
-        }
-        .bot-invite-btn {
-            display: inline-block;
-            background: linear-gradient(90deg, #2563eb, #7c3aed);
-            color: white;
-            font-weight: bold;
-            padding: 10px 24px;
-            border-radius: 6px;
-            text-decoration: none;
-            margin-bottom: 20px;
-            transition: box-shadow 0.2s;
-        }
-        .bot-invite-btn:hover {
-            box-shadow: 0 0 15px rgba(99, 102, 241, 0.6);
         }
     </style>
 </head>
 <body>
-    
-    <div id="splash" onclick="openMain()">
-        <div class="main-text">THE WORLD IS YOURS</div>
-        <div class="tap-text">TAP THE SCREEN</div>
-    </div>
 
-    <!-- MAIN CONTENT -->
-    <div class="container" id="mainContent">
-        <h1> </h1>
-        <script>
-        const MY_PROFILE_ID = "1497306715715010620";
-        const MY_WEBSITE = "https://blah-hck.github.io/blah/";
-        const members = {
-            topRow: [ {id: "1467935676694532408"}, {id: MY_PROFILE_ID}, {id: "901323764665573437"} ],
-            aboveAll: [ {id: "1512264636496351456"}, {id: "1392396268558356534"}, {id: "1495784072029540526"}, {id: "1259504569193463848"}, {id: "1471133660144078910"} ],
-            topShotta: [ {id: "1421541305309335643"}, {id: "1470435980170367037"}, {id: "1504842889145090329"} ],
-            dayOnes: [ {id: "1513550327335616700"}, {id: "1520237144990285907"}, {id: "1517855862004383916"}, {id: "1368224386192248903"}, {id: "1458081038722138164"}, {id: "1284500317878354043"}, {id: "1364578189153796106"}, {id: "1509144884211351672"}, {id: "1456301481031372905"} ]
-        };
-        </script>
-        <div class="section-title">Top Row</div>
-        <div class="grid" id="topRowGrid"></div>
-        <div class="section-title">ABOVE ALL</div>
-        <div class="grid" id="aboveAllGrid"></div>
-        <div class="section-title">TOP SHOTTA</div>
-        <div class="grid" id="topShottaGrid"></div>
-        <div class="section-title">DAY ONES</div>
-        <div class="marquee-wrapper"><div class="marquee-content" id="dayOnesMarquee"></div></div>
-        <div class="section-title">COMMUNITY HUB</div>
-        <div class="hub-container" id="hubContainer"></div>
-        <div class="bot-feature-card">
-            <div class="bot-banner"></div>
-            <div class="bot-avatar-wrap">
-                <img class="bot-avatar" src="https://i.imgur.com/gtHShSn.jpeg" alt="Bot Avatar">
-            </div>
-            <h2 class="bot-name">1337 SECURITY</h2>
-            <p class="bot-role">[ SECURITY ] • Anti-Raid</p>
-            <div class="bot-tags">
-                <span class="bot-tag">MOD</span>
-                <span class="bot-tag">SECURITY</span>
-                <span class="bot-tag">19 SERVERS</span>
-            </div>
-            <p class="bot-desc">Moderation, security & utility bot for the Server's ecosystem.<br>Gambling Games..</p>
-            <a href="https://discord.com/oauth2/authorize?client_id=1529525841153753148&permissions=8&integration_type=0&scope=bot+applications.commands" target="_blank" class="bot-invite-btn">✧ INVITE BOT</a>
-        </div>
-    </div>
+<!-- ✅ SPLASH SCREEN -->
+<div id="splash" onclick="go()">
+    <div class="main">THE WORLD IS YOURS</div>
+    <div class="sub">TAP THE SCREEN</div>
+</div>
 
-    <!-- MODALS -->
-    <div id="serverModal">
-        <div class="modal-content">
-            <h3 id="modalName"></h3>
-            <p id="modalInfo"></p>
-            <a href="" id="modalLink" target="_blank" class="modal-join">Click Here</a>
-            <br><button class="close-modal" onclick="closeServerModal()">Close</button>
-        </div>
-    </div>
-    <div id="profileModal">
-        <div class="profile-card">
-            <div class="profile-banner"></div>
-            <button class="close-profile" onclick="closeProfileModal()">&times;</button>
-            <div class="prof-header">
-                <div class="prof-avatar-wrap">
-                    <img class="prof-avatar" id="profAvatar">
-                    <div class="prof-status-big" id="profStatusBig"></div>
-                </div>
-                <div class="prof-info">
-                    <h3 class="prof-name-big" id="profNameBig"></h3>
-                    <p class="prof-username" id="profUsername"></p>
-                </div>
-            </div>
-            <div class="prof-bio" id="profBio">Naglo-load...</div>
-            <div class="prof-section">
-                <h4 class="prof-section-title">STATUS / ACTIVITY</h4>
-                <div id="activityContainer">
-                    <div class="prof-activity-empty"><p class="activity-details">Naglo-load...</p></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- AUDIO -->
-    <audio id="bgAudio" loop preload="auto" style="display:none;">
-        <source src="https://www.image2url.com/r2/default/audio/1782390881799-61def1ab-afbd-453d-ae39-f6aff7d67d0b.mp3">
-    
+<!-- ✅ MAIN CONTENT -->
+<div id="main">
+    <h1> </h1>
 
     <script>
-        // ✅ PINAKA-SIMPLE AT SIGURADONG PAGBUKAS
-        function openMain() {
-            // Itago ang splash
-            document.getElementById('splash').classList.add('fade-out');
-            // Ipakita ang main content
-            document.getElementById('mainContent').style.display = 'block';
-            // Mag-play ng audio
-            const audio = document.getElementById('bgAudio');
-            audio.volume = 0.25;
-            audio.play().catch(() => {});
-            // I-load ang mga user card (hindi haharang sa click)
-            loadAll();
-        }
+    const MY_ID = "1497306715715010620";
+    const MY_LINK = "https://blah-hck.github.io/blah/";
 
-        // ✅ LIGTAS NA PAGKUHA NG PROFILE
-        function openProfile(data, avatarFallback) {
-            const user = data?.discord_user;
-            const status = data?.discord_status || 'offline';
+    const listahan = {
+        top: [ {id:"1467935676694532408"}, {id:MY_ID}, {id:"901323764665573437"} ],
+        above: [ {id:"1512264636496351456"}, {id:"1392396268558356534"}, {id:"1495784072029540526"}, {id:"1259504569193463848"}, {id:"1471133660144078910"} ],
+        shotta: [ {id:"1421541305309335643"}, {id:"1470435980170367037"}, {id:"1504842889145090329"} ],
+        days: [ {id:"1513550327335616700"}, {id:"1520237144990285907"}, {id:"1517855862004383916"}, {id:"1368224386192248903"}, {id:"1458081038722138164"}, {id:"1284500317878354043"}, {id:"1364578189153796106"}, {id:"1509144884211351672"}, {id:"1456301481031372905"} ]
+    };
+    </script>
 
-            if (!user) {
-                document.getElementById('profNameBig').innerText = 'Unknown User';
-                document.getElementById('profUsername').innerText = '@unknown';
-                document.getElementById('profBio').innerText = 'Walang impormasyon';
-                document.getElementById('profAvatar').src = avatarFallback || 'https://cdn.discordapp.com/embed/avatars/0.png';
-                document.getElementById('profStatusBig').className = 'prof-status-big';
-                document.getElementById('activityContainer').innerHTML = '<div class="prof-activity-empty"><p class="activity-details">Walang aktibidad</p></div>';
-                document.getElementById('profileModal').style.display = 'flex';
-                return;
+    <div class="section-title">Top Row</div>
+    <div class="grid" id="top"></div>
+
+    <div class="section-title">ABOVE ALL</div>
+    <div class="grid" id="above"></div>
+
+    <div class="section-title">TOP SHOTTA</div>
+    <div class="grid" id="shotta"></div>
+
+    <div class="section-title">DAY ONES</div>
+    <div class="marquee-wrapper"><div class="marquee" id="days"></div></div>
+
+    <div class="section-title">COMMUNITY HUB</div>
+    <div class="hub" id="hub"></div>
+
+    <div class="bot-card">
+        <div class="bot-banner"></div>
+        <img class="bot-avatar" src="https://i.imgur.com/gtHShSn.jpeg">
+        <h2 class="bot-name">1337 SECURITY</h2>
+        <p class="bot-role">[ SECURITY ] • Anti-Raid</p>
+        <p style="padding: 0 15px; color:#aaa;">Moderation, security & utility bot.<br>Gambling Games..</p>
+        <a href="https://discord.com/oauth2/authorize?client_id=1529525841153753148&permissions=8&scope=bot+applications.commands" class="invite-btn" target="_blank">✧ INVITE BOT</a>
+    </div>
+</div>
+
+<!-- ✅ AYOS NA PROFILE MODAL -->
+<div id="profileModal" class="modal">
+    <div class="modal-box">
+        <div class="prof-banner">
+            <button class="close" onclick="closeProf()">&times;</button>
+        </div>
+        <div class="prof-content">
+            <div class="prof-avatar-wrap">
+                <div class="prof-avatar">
+                    <img id="pAvatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" src="">
+                    <div class="prof-status" id="pStatus"></div>
+                </div>
+            </div>
+            <h3 class="prof-name" id="pName"></h3>
+            <p class="prof-user" id="pUser"></p>
+            <div class="prof-bio" id="pBio"></div>
+            <div class="prof-activity">
+                <h4 class="act-title">STATUS / ACTIVITY</h4>
+                <div id="pAct"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ✅ AUDIO -->
+<audio id="musika" loop>
+    <source src="https://www.image2url.com/r2/default/audio/1782390881799-61def1ab-afbd-453d-ae39-f6aff7d67d0b.mp3">
+
+
+<script>
+// ✅ PAGBUKAS NG SPLASH
+function go() {
+    document.getElementById('splash').classList.add('fade');
+    document.getElementById('main').style.display = 'block';
+    const a = document.getElementById('musika');
+    a.volume = 0.25;
+    a.play().catch(()=>{});
+    loadAll();
+}
+
+// ✅ PAGBUKAS NG PROFILE - MALINIS NA AYOS
+function showProf(data, defAvatar) {
+    const u = data?.discord_user;
+    const st = data?.discord_status || 'offline';
+
+    if (!u) {
+        document.getElementById('pName').innerText = 'Unknown User';
+        document.getElementById('pUser').innerText = '@unknown';
+        document.getElementById('pBio').innerText = 'Walang impormasyon';
+        document.getElementById('pAvatar').src = defAvatar;
+    } else {
+        document.getElementById('pName').innerText = u.global_name || u.username;
+        document.getElementById('pUser').innerText = '@' + u.username;
+        document.getElementById('pBio').innerText = u.bio || 'Walang nakalagay na bio.';
+        document.getElementById('pAvatar').src = u.avatar ? `https://cdn.discordapp.com/avatars/${u.id}/${u.avatar}.png?size=256` : defAvatar;
+    }
+
+    // Status
+    const statusEl = document.getElementById('pStatus');
+    statusEl.className = 'prof-status';
+    if(st==='online') statusEl.classList.add('on');
+    else if(st==='idle') statusEl.classList.add('idle');
+    else if(st==='dnd') statusEl.classList.add('dnd');
+
+    // Activity
+    let actHtml = '';
+    if(data?.activities?.length>0){
+        data.activities.forEach(act=>{
+            let icon = act.type===2 ? '🎵' : act.type===0 ? '🎮' : '🔹';
+            actHtml += `<div class="act-box"><b>${icon} ${act.name}</b><br>${act.details||''} ${act.state||''}</div>`;
+        });
+    } else actHtml = '<div class="act-box">Walang aktibidad</div>';
+    document.getElementById('pAct').innerHTML = actHtml;
+
+    document.getElementById('profileModal').style.display = 'flex';
+}
+
+function closeProf(){ document.getElementById('profileModal').style.display='none'; }
+
+// ✅ GUMAWA NG USER CARD
+async function card(userId) {
+    const el = document.createElement('div');
+    el.className = 'user-card';
+    let avatar = 'https://cdn.discordapp.com/embed/avatars/0.png';
+    let name = '...';
+    let statusClass = '';
+    let userData = null;
+
+    try {
+        const res = await fetch(`https://api.lanyard.rest/v1/users/${userId}`);
+        const json = await res.json();
+        if(json.success){
+            userData = json.data;
+            const u = json.data.discord_user;
+            if(u){
+                name = u.global_name || u.username;
+                if(u.avatar) avatar = `https://cdn.discordapp.com/avatars/${u.id}/${u.avatar}.png?size=128`;
             }
+            const s = json.data.discord_status;
+            if(s==='online') statusClass='on';
+            else if(s==='idle') statusClass='idle';
+            else if(s==='dnd') statusClass='dnd';
+        } else name = 'Unknown';
+    } catch { name = 'Unknown'; }
 
-            document.getElementById('profNameBig').innerText = user.global_name || user.username || 'Unknown User';
-            document.getElementById('profUsername').innerText = '@' + (user.username || 'unknown');
-            document.getElementById('profBio').innerText = user.bio || 'Walang nakalagay na bio.';
-            document.getElementById('profAvatar').src = user.avatar 
-                ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=256` 
-                : avatarFallback || 'https://cdn.discordapp.com/embed/avatars/0.png';
-            
-            const statusEl = document.getElementById('profStatusBig');
-            statusEl.className = 'prof-status-big';
-            if (status === 'online') statusEl.classList.add('status-online');
-            else if (status === 'idle') statusEl.classList.add('status-idle');
-            else if (status === 'dnd') statusEl.classList.add('status-dnd');
+    el.innerHTML = `
+        <div class="avatar-wrap">
+            <img class="avatar" src="${avatar}">
+            <div class="status ${statusClass}"></div>
+        </div>
+        <div class="username">${name}</div>
+    `;
 
-            let html = '';
-            if (data.activities && data.activities.length > 0) {
-                data.activities.forEach(act => {
-                    let icon = '🔹';
-                    if (act.type === 2) icon = '🎵';
-                    else if (act.type === 0) icon = '🎮';
-                    html += `
-                    <div class="prof-activity-box">
-                        <p class="activity-name">${icon} ${act.name || 'Aktibidad'}</p>
-                        <p class="activity-details">${act.details || ''} ${act.state || ''}</p>
-                    </div>`;
-                });
-            } else {
-                html = '<div class="prof-activity-empty"><p class="activity-details">Walang nakitang aktibidad</p></div>';
-            }
-            document.getElementById('activityContainer').innerHTML = html;
-            document.getElementById('profileModal').style.display = 'flex';
-        }
+    el.onclick = () => {
+        if(userId === MY_ID) window.open(MY_LINK, '_blank');
+        else showProf(userData, avatar);
+    };
+    return el;
+}
 
-        function closeProfileModal() { document.getElementById('profileModal').style.display = 'none'; }
-        function closeServerModal() { document.getElementById('serverModal').style.display = 'none'; }
-        window.onclick = e => {
-            if(e.target === document.getElementById('profileModal')) closeProfileModal();
-            if(e.target === document.getElementById('serverModal
+async function draw(id, list) {
+    const wrap = document.getElementById(id);
+    for(const u of list) wrap.appendChild(await card(u.id));
+}
+async function drawMarq(list) {
+    const wrap = document.getElementById('days');
+    for(let i=0;i<2;i++) for(const u of list) wrap.appendChild(await card(u.id));
+}
+
+async function loadAll() {
+    await draw('top', listahan.top);
+    await draw('above', listahan.above);
+    await draw('shotta', listahan.shotta);
+    await drawMarq(listahan.days);
+
+    // Servers
+    const servers = [
+        {n:"BLAH #ALBTHAX",i:"Ty7qb4thSs",g:"1504217597900755075",ico:"335c5d2498dbf8b0ab834b022710c86a",d:"Hax Enjoyer"},
+        {n:"KNA SAYIN #4REEL",i:"BWptZKj8mN",g:"1525845358436028506",ico:"e887897782e8b475e023ee5b64f53703",d:"#4REEL"}
+    ];
+    const hub = document.getElementById('hub');
+    servers.forEach(s=>{
+        const sx = document.createElement('div'); sx.className='server';
+        sx.innerHTML = `
+            <div style="display:flex;align-items:center;gap:12px;">
+                <img class="server-icon" src="https://cdn.discordapp.com/icons/${s.g}/${s.ico}.png?size=128">
+                <div><b>${s.n}</b><br><small style="color:#aaa">${s.d}</small></div>
+            </div>
+        `;
+        sx.onclick = ()=> window.open(`https://discord.gg/${s.i}`, '_blank');
+        hub.appendChild(sx);
+    });
+}
+</script>
+</body>
+</html>
