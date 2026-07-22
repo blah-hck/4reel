@@ -79,6 +79,7 @@
             right: 3px;
             width: 14px;
             height: 14px;
+           
             border-radius: 50%;
             border: 2px solid #000;
             background: #80848e;
@@ -95,6 +96,7 @@
             text-overflow: ellipsis;
             white-space: nowrap;
         }
+        /* ✅ SPLASH SCREEN - SIMPLE AT MABILIS */
         #splash {
             position: fixed;
             inset: 0;
@@ -105,10 +107,12 @@
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            transition: opacity 0.4s ease;
+            transition: opacity 0.3s ease;
         }
-        #splash.fade-out { opacity: 0; pointer-events: none; }
-        #splash.hidden { display: none; }
+        #splash.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
         #splash .main-text {
             font-size: clamp(2rem, 7vw, 2.8rem);
             font-family: Arial Black, Impact, sans-serif;
@@ -191,7 +195,7 @@
             cursor: pointer;
         }
 
-        
+        /* ✅ PROFILE MODAL */
         #profileModal {
             position: fixed;
             inset: 0;
@@ -312,22 +316,8 @@
             color: #d4d4d8;
             line-height: 1.4;
         }
-        .prof-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-top: 10px;
-        }
-        .prof-tag {
-            background: rgba(88, 101, 242, 0.2);
-            border: 1px solid rgba(88, 101, 242, 0.4);
-            color: #c9cdfb;
-            font-size: 0.75rem;
-            padding: 3px 8px;
-            border-radius: 4px;
-        }
 
-        
+        /* BOT CARD STYLE */
         .bot-feature-card {
             background: rgba(25, 25, 35, 0.9);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -409,7 +399,7 @@
 </head>
 <body>
 
-    <div id="splash" onclick="hideSplash()">
+    <div id="splash" onclick="openMain()">
         <div class="main-text">THE WORLD IS YOURS</div>
         <div class="tap-text">TAP THE SCREEN</div>
     </div>
@@ -423,8 +413,8 @@
 
         const members = {
             topRow: [ {id: "1467935676694532408"}, {id: MY_PROFILE_ID}, {id: "901323764665573437"} ],
-            aboveAll: [ {id: "1512264636496351456"}, {id: "1392396268558356534"}, {id: "1495784072029540526"}, {id: "1259504569193463848"}, {id: "1421541305309335643"} ],
-            topShotta: [ {id: "1470435980170367037"}, {id: "1470435980170367037"}, {id: "1504842889145090329"} ],
+            aboveAll: [ {id: "1512264636496351456"}, {id: "1392396268558356534"}, {id: "1495784072029540526"}, {id: "1259504569193463848"}, {id: "1471133660144078910"} ],
+            topShotta: [ {id: "1421541305309335643"}, {id: "1470435980170367037"}, {id: "1504842889145090329"} ],
             dayOnes: [ {id: "1513550327335616700"}, {id: "1520237144990285907"}, {id: "1517855862004383916"}, {id: "1368224386192248903"}, {id: "1458081038722138164"}, {id: "1284500317878354043"}, {id: "1364578189153796106"}, {id: "1509144884211351672"}, {id: "1456301481031372905"} ]
         };
         </script>
@@ -487,55 +477,55 @@
             </div>
 
             <div class="prof-bio" id="profBio">
-                Walang nakalagay na bio...
+                Naglo-load...
             </div>
 
             <div class="prof-section">
                 <h4 class="prof-section-title">STATUS / ACTIVITY</h4>
                 <div id="activityContainer">
                     <div class="prof-activity-empty">
-                        <p class="activity-details">Offline / Walang Aktibidad</p>
+                        <p class="activity-details">Naglo-load...</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- ✅ IBINALIK ANG AUDIO - PERO HINDI NA NAKAKA-BLOCK -->
     <audio id="bgAudio" loop preload="auto" style="display:none;">
         <source src="https://www.image2url.com/r2/default/audio/1782390881799-61def1ab-afbd-453d-ae39-f6aff7d67d0b.mp3">
     
 
     <script>
-        function hideSplash() {
+        // ✅ PANGUNAHING PARAAN: HINDI NA STUCK, MAY MUSIKA PA
+        function openMain() {
             const splash = document.getElementById('splash');
             const audio = document.getElementById('bgAudio');
             
+            // Mawala agad ang splash
             splash.classList.add('fade-out');
-            setTimeout(() => {
-                splash.classList.add('hidden');
-            }, 400);
             
+            // Mag-play ng tunog nang ligtas (kahit harangan, tuloy pa rin ang site)
             audio.volume = 0.25;
-            audio.play().catch(err => console.log("Audio blocked"));
+            audio.play().catch(() => {}); // ❌ Walang error na hihinto sa proseso
         }
 
         function formatTime(start) {
             if(!start) return "";
             const now = Date.now();
             const diff = Math.floor((now - start) / 1000);
-            if(diff < 60) return "Just now";
+            if(diff < 60) return "Kakagsimula lang";
             const h = Math.floor(diff / 3600);
             const m = Math.floor((diff % 3600) / 60);
-            if(h > 0) return `${h}h ${m}m`;
-            return `${m}m`;
+            if(h > 0) return `${h} oras ${m} minuto`;
+            return `${m} minuto`;
         }
 
-        
+        // ✅ GUMAGANA NA PROFILE
         function openProfile(data, avatar) {
             const u = data.discord_user;
             const status = data.discord_status;
 
-            
             document.getElementById('profAvatar').src = avatar;
             const statusEl = document.getElementById('profStatusBig');
             statusEl.className = "prof-status-big";
@@ -543,40 +533,47 @@
             if(status === 'idle') statusEl.classList.add('status-idle');
             if(status === 'dnd') statusEl.classList.add('status-dnd');
 
-            
             document.getElementById('profNameBig').textContent = u.global_name || u.username;
             document.getElementById('profUsername').textContent = "@" + u.username;
+            document.getElementById('profBio').textContent = u.bio || "Walang nakalagay na bio.";
 
-            
-            document.getElementById('profBio').textContent = u.bio ? u.bio : "Walang nakalagay na bio...";
-
-            
             const actContainer = document.getElementById('activityContainer');
             let html = "";
 
             if(data.activities && data.activities.length > 0) {
                 data.activities.forEach(act => {
                     let icon = "🔹";
-                    if(act.type === 2) icon = " ";
-                    else if(act.type === 0) icon = " ";
-                    else if(act.type === 3) icon = " ";
-                    else if(act.type === 4) icon = " ";
-                    else if(act.type === 5) icon = " ";
+                    if(act.type === 2) icon = "🎵";
+                    else if(act.type === 0) icon = "🎮";
 
                     html += `
                     <div class="prof-activity-box">
                         <p class="activity-name">${icon} ${act.name}</p>
                         ${act.details ? `<p class="activity-details">${act.details}</p>` : ""}
                         ${act.state ? `<p class="activity-details">${act.state}</p>` : ""}
-                        ${act.timestamps ? `<p class="activity-details">⏱️ ${formatTime(act.timestamps.start)}</p>` : ""}
                     </div>`;
                 });
             } else {
-                html = `<div class="prof-activity-empty"><p class="activity-details">Walang aktibidad / Online</p></div>`;
+                html = `<div class="prof-activity-empty"><p class="activity-details">Walang aktibidad.</p></div>`;
             }
 
             actContainer.innerHTML = html;
             document.getElementById('profileModal').style.display = 'flex';
         }
 
-        function closeProfileModal() { d
+        function closeProfileModal() { document.getElementById('profileModal').style.display = 'none'; }
+        function closeServerModal() { document.getElementById('serverModal').style.display = 'none'; }
+        window.onclick = e => {
+            if(e.target === document.getElementById('profileModal')) closeProfileModal();
+            if(e.target === document.getElementById('serverModal')) closeServerModal();
+        }
+
+        async function makeCard(userId) {
+            const card = document.createElement("div");
+            card.className = "user-card";
+            try {
+                const res = await fetch(`https://api.lanyard.rest/v1/users/${userId}`);
+                const data = await res.json();
+                const d = data.data;
+                const avatar = d.discord_user.avatar 
+                    ? `https://
