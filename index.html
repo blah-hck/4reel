@@ -72,6 +72,7 @@
             border: 2px solid #222;
             object-fit: cover;
             background: #111;
+            display: block;
         }
         .status-dot {
             position: absolute;
@@ -82,6 +83,7 @@
             border-radius: 50%;
             border: 2px solid #000;
             background: #80848e;
+            z-index: 2;
         }
         .status-online { background: #23a55a; }
         .status-idle { background: #f0b232; }
@@ -95,6 +97,8 @@
             text-overflow: ellipsis;
             white-space: nowrap;
         }
+
+        /* ✅ LOADING SCREEN */
         #splash {
             position: fixed;
             inset: 0;
@@ -106,24 +110,29 @@
             align-items: center;
             cursor: pointer;
             transition: opacity 0.5s ease;
+            overflow: hidden;
         }
         #splash.fade-out { opacity: 0; pointer-events: none; }
         #splash.hidden { display: none; }
-        #splash .main-text {
-            font-size: clamp(2rem, 7vw, 2.8rem);
-            font-family: Arial Black, Impact, sans-serif;
-            text-transform: uppercase;
+        #splash .tap-text { 
+            font-size: 1.3rem; 
+            color: #fff; 
+            margin-top: 15px; 
+            position: relative; 
+            z-index: 2;
+            text-shadow: 0 0 8px #fff;
+            letter-spacing: 2px;
         }
-        #splash .tap-text { font-size: 1.1rem; color: #aaa; margin-top: 10px; }
+
         .marquee-wrapper { width: 100%; overflow: hidden; margin-top: 20px; }
         .marquee-content { display: flex; gap: 25px; animation: scroll 30s linear infinite; width: max-content; }
         @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         .hub-container {
             margin-top: 20px;
             padding: 15px;
-            background: rgba(18,18,18,0.7);
             border: 1px solid #2a2a2a;
             border-radius: 6px;
+            background: rgba(18,18,18,0.7);
         }
         .server-card {
             display: flex;
@@ -186,7 +195,6 @@
             cursor: pointer;
         }
 
-        
         #profileModal {
             position: fixed;
             inset: 0;
@@ -206,23 +214,20 @@
             border: 1px solid rgba(255,255,255,0.06);
             backdrop-filter: blur(12px);
         }
+        /* ✅ TINANGGAL NA ANG BANNER - ITIM NA LANG AT WALANG LAMAN */
         .profile-banner {
             height: 100px;
-            background: #2b2d31;
+            background: #000000;
             position: relative;
-            overflow: hidden;
         }
-        .profile-banner-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: none;
+        .user-banner {
+            display: none; /* Tinanggal na lahat ng image */
         }
         .close-profile {
             position: absolute;
             top: 8px;
             right: 8px;
-            background: rgba(0,0,0,0.4);
+            background: rgba(255,255,255,0.2);
             border: none;
             color: #fff;
             width: 26px;
@@ -230,12 +235,13 @@
             border-radius: 50%;
             font-size: 1rem;
             cursor: pointer;
-            z-index: 2;
+            z-index: 10;
         }
         .prof-body {
             padding: 0 20px 25px;
             margin-top: -40px;
             position: relative;
+            z-index: 2;
         }
         .avatar-container {
             position: relative;
@@ -298,23 +304,32 @@
 <body>
 
     <div id="splash" onclick="hideSplash()">
-        <div class="main-text">THE WORLD IS YOURS</div>
         <div class="tap-text">TAP THE SCREEN</div>
     </div>
 
     <div class="container">
-        <h1> </h1>
+        <h1>KNA SAYIN 4REEL</h1>
 
         <script>
         const MY_PROFILE_ID = "1497306715715010620"; // PURESKILLS
-        const MY_WEBSITE = "https://blah-hck.github.io/blah/"; // BOBO
+        const MY_WEBSITE = "https://blah-hck.github.io/blah/"; 
 
-        
+        // ✅ ORIGINAL NA LISTAHAN
         const members = {
             topRow: [ {id: "1467935676694532408"}, {id: MY_PROFILE_ID}, {id: "901323764665573437"} ],
             aboveAll: [ {id: "1512264636496351456"}, {id: "1392396268558356534"}, {id: "1495784072029540526"}, {id: "1259504569193463848"}, {id: "1421541305309335643"} ],
             topShotta: [ {id: "1504842889145090329"}, {id: "1520237144990285907"}, {id: "1255196462195806290"} ],
-            dayOnes: [ {id: "1007818124776706209"}, {id: "1390177882755829851"}, {id: "1517855862004383916"}, {id: "1364578189153796106"}, {id: "1513550327335616700"}, {id: "1284500317878354043"}, {id: "1368224386192248903"}, {id: "1509144884211351672"}, {id: "1456301481031372905"} ]
+            dayOnes: [ 
+                {id: "1007818124776706209"}, 
+                {id: "1390177882755829851"}, 
+                {id: "1517855862004383916"}, 
+                {id: "1364578189153796106"}, 
+                {id: "1513550327335616700"}, 
+                {id: "1284500317878354043"}, 
+                {id: "1368224386192248903"}, 
+                {id: "1509144884211351672"}, 
+                {id: "1529632901782573237"},
+            ]
         };
         </script>
 
@@ -343,11 +358,10 @@
         </div>
     </div>
 
-    
     <div id="profileModal">
         <div class="profile-card">
+            
             <div class="profile-banner">
-                <img class="profile-banner-img" id="profBanner" alt="">
                 <button class="close-profile" onclick="closeProfileModal()">&times;</button>
             </div>
             <div class="prof-body">
@@ -370,7 +384,8 @@
         </div>
     </div>
 
-    <audio id="bgAudio" loop preload="auto" style="display:none;">
+    
+    <audio id="bgAudio" loop preload="auto">
         <source src="https://www.image2url.com/r2/default/audio/1782390881799-61def1ab-afbd-453d-ae39-f6aff7d67d0b.mp3">
     
 
@@ -384,33 +399,17 @@
             audio.play().catch(e => console.log(e));
         }
 
-        
         function openProfile(data, defAvatar) {
             const user = data?.discord_user || {};
             const status = data?.discord_status || 'offline';
 
-            // ✅ PANGALAN & TAG
             document.getElementById('profName').innerText = user.global_name || user.username || 'Unknown';
             document.getElementById('profTag').innerText = '@' + (user.username || 'unknown');
 
-            // ✅ BADGE
-            document.getElementById('badgeText').innerText = '1337';
-
-            // ✅ AVATAR
             document.getElementById('profAvatar').src = user.avatar 
-                ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=256` 
+                ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${user.avatar.startsWith('a_') ? 'gif' : 'png'}?size=256` 
                 : defAvatar;
-            
-            // ✅ BANNER LOGIC: KUNG MERON, LALABAS PERFECT; KUNG WALA, WALANG ERROR
-            const bannerImg = document.getElementById('profBanner');
-            if (user.banner) {
-                bannerImg.src = `https://cdn.discordapp.com/users/${user.id}/${user.banner}.png?size=512`;
-                bannerImg.style.display = 'block';
-            } else {
-                bannerImg.style.display = 'none';
-            }
 
-            // ✅ STATUS
             const statusEl = document.getElementById('profStatusBig');
             statusEl.className = 'prof-status-big';
             if (status === 'online') statusEl.classList.add('status-online');
@@ -427,7 +426,6 @@
             if(e.target === document.getElementById('serverModal')) closeServerModal();
         }
 
-        
         async function makeCard(userId) {
             const card = document.createElement("div");
             card.className = "user-card";
@@ -448,11 +446,14 @@
                 const res = await fetch(`https://api.lanyard.rest/v1/users/${userId}`);
                 const data = await res.json();
                 const d = data.data || {};
-                const avatarUrl = d.discord_user?.avatar ? `https://cdn.discordapp.com/avatars/${userId}/${d.discord_user.avatar}.png?size=128` : "https://cdn.discordapp.com/embed/avatars/0.png";
+                
+                const avatarUrl = d.discord_user?.avatar 
+                    ? `https://cdn.discordapp.com/avatars/${userId}/${d.discord_user.avatar}.${d.discord_user.avatar.startsWith('a_') ? 'gif' : 'png'}?size=128` 
+                    : "https://cdn.discordapp.com/embed/avatars/0.png";
 
                 card.innerHTML = `
                     <div class="avatar-wrap">
-                        <img class="avatar" src="${avatarUrl}" loading="lazy">
+                        <img class="avatar" src="${avatarUrl}" loading="lazy" alt="">
                         <div class="status-dot status-${d.discord_status || 'offline'}"></div>
                     </div>
                     <div class="username">${d.discord_user?.global_name || d.discord_user?.username || '???'}</div>
@@ -491,6 +492,7 @@
         }
         loadAll();
 
+        
         const allyServers = [
             { name: "BLAH #ALBTHAX", invite: "Ty7qb4thSs", guildId: "1504217597900755075", icon: "335c5d2498dbf8b0ab834b022710c86a", description: "Hax Enjoyer" },
             { name: "KNA SAYIN #4REEL", invite: "BWptZKj8mN", guildId: "1525845358436028506", icon: "e887897782e8b475e023ee5b64f53703", description: "#4REEL" }
